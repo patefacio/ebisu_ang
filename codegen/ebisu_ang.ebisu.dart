@@ -32,6 +32,7 @@ A library that supports code generation of Angular2 code
     ..testLibraries = [
     ]
     ..libraries = [
+
       library('ebisu_ang')
         ..includesLogger = true
         ..imports = [
@@ -40,7 +41,42 @@ A library that supports code generation of Angular2 code
           'package:quiver/iterables.dart',
         ]
         ..parts = [
-          part('generic')
+
+          part('ang_entity')
+          ..classes = [
+            class_('ang_entity')
+            ..mixins = [ 'Entity' ]
+            ..isAbstract = true
+            ..members = [ member('id')..type = 'Id' ]
+          ],
+
+          part('ang_template')
+          ..classes = [
+            class_('template')
+            ..mixins = [ 'Entity' ]
+            ..members = [
+            ]
+          ],
+
+          part('ang_directive')
+          ..classes = [],
+
+          part('ang_model')
+          ..classes = [
+            class_('model')
+          ],
+
+          part('ang_module')
+          ..classes = [
+            class_('module')
+          ],
+
+          part('ang_controller')
+          ..classes = [
+            class_('controller'),
+          ]
+
+
         ]
     ];
 
