@@ -55,7 +55,7 @@ A library that supports code generation of Angular2 code
             class_('template')
             ..mixins = [ 'Entity' ]
             ..members = [
-            ]
+            ],
           ],
 
           part('ang_directive')
@@ -71,9 +71,19 @@ A library that supports code generation of Angular2 code
             class_('module')
           ],
 
-          part('ang_controller')
+          part('ang_component')
           ..classes = [
+            class_('component')
+            ..members = [
+              member('selector')
+            ],
             class_('controller'),
+
+            class_('view')
+            ..members = [
+              member('template')..type = 'Template',
+              member('directives')..type = 'List',
+            ],
           ]
 
 
