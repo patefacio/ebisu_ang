@@ -8,7 +8,7 @@ import 'package:quiver/iterables.dart';
 // custom <additional imports>
 // end <additional imports>
 
-part 'src/ebisu_ang/ang_controller.dart';
+part 'src/ebisu_ang/ang_component.dart';
 part 'src/ebisu_ang/ang_directive.dart';
 part 'src/ebisu_ang/ang_entity.dart';
 part 'src/ebisu_ang/ang_model.dart';

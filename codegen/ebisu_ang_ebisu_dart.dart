@@ -15,6 +15,8 @@ void main() {
 
   Logger.root.level = Level.OFF;
 
+  // custom <ebisuAngEbisuDart main>
+
   final purpose = '''
 A library that supports code generation of Angular2 code
 ''';
@@ -97,4 +99,6 @@ A library that supports code generation of Angular2 code
 **** NON GENERATED FILES ****
 ${indentBlock(brCompact(nonGeneratedFiles))}
 ''');
+
+  // end <ebisuAngEbisuDart main>
 }
