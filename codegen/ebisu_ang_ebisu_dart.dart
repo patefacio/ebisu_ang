@@ -99,11 +99,15 @@ A library that supports code generation of Angular2 code
           ..classes = [
             class_('module')
             ..extend = 'AngEntity'
+            ..members = [
+              member('components')..type = 'List<Component>'..classInit = [],
+            ]
           ],
 
           part('ang_component')
           ..classes = [
             class_('component')
+            ..extend = 'AngEntity'
             ..members = [
               member('selector'),
               member('template_url')

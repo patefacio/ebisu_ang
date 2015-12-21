@@ -6,7 +6,10 @@ main() {
   final helloWorld =
     installation('hello_world')
     ..modules = [
-      module('hello_mod'),
+      module('hello_mod')
+      ..components = [
+        component('main_div'),
+      ]
     ];
 
   for(var x in helloWorld.progeny) {
