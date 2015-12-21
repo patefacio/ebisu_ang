@@ -4,6 +4,9 @@ abstract class AngEntity extends Object with Entity {
   Id id;
 
   // custom <class AngEntity>
+
+  AngEntity(id_) : this.id = makeId(id_);
+
   // end <class AngEntity>
 
 }

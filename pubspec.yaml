@@ -8,6 +8,9 @@ description: >
 dependencies:
 
 # custom <ebisu_ang dependencies>
+
+  ebisu: "^0.6.11"
+
 # end <ebisu_ang dependencies>
 
 dev_dependencies:

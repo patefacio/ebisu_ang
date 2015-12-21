@@ -1,6 +1,6 @@
 part of ebisu_ang.ebisu_ang;
 
-class Template extends Object with Entity {
+class Template extends AngEntity {
   // custom <class Template>
   // end <class Template>
 

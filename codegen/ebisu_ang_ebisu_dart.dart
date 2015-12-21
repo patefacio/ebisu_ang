@@ -44,6 +44,26 @@ A library that supports code generation of Angular2 code
         ]
         ..parts = [
 
+          part('ang_installation')
+          ..classes = [
+            class_('installation')
+            ..extend = 'AngEntity'
+            ..members = [
+              member('apps')..type = 'List<App>'..classInit = [],
+              member('modules')..type = 'List<Modules>'..classInit = [],
+            ]
+          ],
+
+          part('ang_app')
+          ..classes = [
+            class_('app')
+            ..extend = 'AngEntity'
+            ..members = [
+              member('entry_points')..type = 'List<String>'..classInit = [],
+              member('modules')..type = 'List<Module>'..classInit = [],
+            ],
+          ],
+
           part('ang_entity')
           ..classes = [
             class_('ang_entity')
@@ -55,13 +75,20 @@ A library that supports code generation of Angular2 code
           part('ang_template')
           ..classes = [
             class_('template')
-            ..mixins = [ 'Entity' ]
+            ..extend = 'AngEntity'
             ..members = [
             ],
           ],
 
           part('ang_directive')
-          ..classes = [],
+          ..classes = [
+            class_('directive')
+            ..extend = 'AngEntity'
+            ..members = [
+              member('selector'),
+              member('providers')..type = 'List<String>'..classInit = [],
+            ]
+          ],
 
           part('ang_model')
           ..classes = [
@@ -71,14 +98,25 @@ A library that supports code generation of Angular2 code
           part('ang_module')
           ..classes = [
             class_('module')
+            ..extend = 'AngEntity'
           ],
 
           part('ang_component')
           ..classes = [
             class_('component')
             ..members = [
-              member('selector')
+              member('selector'),
+              member('template_url')
+              ..doc = 'For use when referring to separate file containing template',
+              member('template')
+              ..doc = 'For use when inlining template',
+              member('directives')..type = 'List<Directive>'..classInit = [],
+              member('styles')..type = 'List<String>'..classInit = [],
+              member('style_urls')..type = 'List<String>'..classInit = [],
+              member('pipes')..type = 'List<String>'..classInit = [],
+              member('view_providers')..type = 'List<String>'..classInit = [],
             ],
+
             class_('controller'),
 
             class_('view')
@@ -95,7 +133,7 @@ A library that supports code generation of Angular2 code
 
   ebisu.generate();
 
-  _logger.warning('''
+  print('''
 **** NON GENERATED FILES ****
 ${indentBlock(brCompact(nonGeneratedFiles))}
 ''');
