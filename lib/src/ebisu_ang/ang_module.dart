@@ -9,10 +9,8 @@ class Module extends AngEntity {
 
   Iterable<Entity> get children => components;
 
-  toString() => brCompact([
-    'Module(${id.snake})',
-    indentBlock(brCompact(components))
-  ]);
+  toString() =>
+      brCompact(['Module(${id.snake})', indentBlock(brCompact(components))]);
 
   // end <class Module>
 

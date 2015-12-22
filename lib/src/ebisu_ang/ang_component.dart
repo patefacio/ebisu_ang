@@ -13,6 +13,7 @@ class Component extends AngEntity {
   List<String> styleUrls = [];
   List<String> pipes = [];
   List<String> viewProviders = [];
+  Class impl;
 
   // custom <class Component>
 
@@ -21,14 +22,10 @@ class Component extends AngEntity {
   Iterable<Entity> get children => new Iterable<Entity>.generate(0);
 
   toString() => brCompact([
-    'Component(${id.snake})',
-    indentBlock(brCompact([
-      '---- styles ---',
-      styles,
-      '---- styleUrls ---',
-      styleUrls,
-    ]))
-  ]);
+        'Component(${id.snake})',
+        indentBlock(brCompact(
+            ['---- styles ---', styles, '---- styleUrls ---', styleUrls,]))
+      ]);
 
   // end <class Component>
 

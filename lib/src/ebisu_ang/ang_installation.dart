@@ -10,6 +10,11 @@ class Installation extends AngEntity {
 
   Iterable<Entity> get children => concat([apps, modules]);
 
+  toString() => brCompact([
+        'Installation(${id.snake})',
+        indentBlock(brCompact([modules, apps]))
+      ]);
+
   // end <class Installation>
 
 }

@@ -119,6 +119,7 @@ A library that supports code generation of Angular2 code
               member('style_urls')..type = 'List<String>'..classInit = [],
               member('pipes')..type = 'List<String>'..classInit = [],
               member('view_providers')..type = 'List<String>'..classInit = [],
+              member('impl')..type = 'Class',
             ],
 
             class_('controller'),
