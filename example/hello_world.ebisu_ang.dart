@@ -5,8 +5,8 @@ main() {
 
   final helloWorld =
     installation('hello_world')
-    ..modules = [
-      module('hello_mod')
+    ..packages = [
+      package('hello_mod')
       ..components = [
         component('main_div'),
       ]

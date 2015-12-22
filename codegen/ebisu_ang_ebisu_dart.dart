@@ -40,7 +40,10 @@ A library that supports code generation of Angular2 code
         ..imports = [
           'package:id/id.dart',
           'package:ebisu/ebisu.dart',
+          "'package:ebisu/ebisu_dart_meta.dart' hide id",
           'package:quiver/iterables.dart',
+          'package:path/path.dart',
+          'io',
         ]
         ..parts = [
 
@@ -49,8 +52,9 @@ A library that supports code generation of Angular2 code
             class_('installation')
             ..extend = 'AngEntity'
             ..members = [
+              member('root_path')..access = IA,
               member('apps')..type = 'List<App>'..classInit = [],
-              member('modules')..type = 'List<Modules>'..classInit = [],
+              member('packages')..type = 'List<Package>'..classInit = [],
             ]
           ],
 
@@ -60,7 +64,6 @@ A library that supports code generation of Angular2 code
             ..extend = 'AngEntity'
             ..members = [
               member('entry_points')..type = 'List<String>'..classInit = [],
-              member('modules')..type = 'List<Module>'..classInit = [],
             ],
           ],
 
@@ -95,9 +98,9 @@ A library that supports code generation of Angular2 code
             class_('model')
           ],
 
-          part('ang_module')
+          part('ang_package')
           ..classes = [
-            class_('module')
+            class_('package')
             ..extend = 'AngEntity'
             ..members = [
               member('components')..type = 'List<Component>'..classInit = [],
@@ -119,16 +122,11 @@ A library that supports code generation of Angular2 code
               member('style_urls')..type = 'List<String>'..classInit = [],
               member('pipes')..type = 'List<String>'..classInit = [],
               member('view_providers')..type = 'List<String>'..classInit = [],
-              member('impl')..type = 'Class',
+              member('controller')..type = 'Class',
+              member('classes')..type = 'List<Class>'..classInit = [],
             ],
 
             class_('controller'),
-
-            class_('view')
-            ..members = [
-              member('template')..type = 'Template',
-              member('directives')..type = 'List',
-            ],
           ]
 
 

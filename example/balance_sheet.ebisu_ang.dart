@@ -5,8 +5,8 @@ main() {
 
   final dossier =
     installation('dossier')
-    ..modules = [
-      module('balance_sheet')
+    ..packages = [
+      package('balance_sheet')
       ..components = [
         component('account'),
       ]
@@ -14,4 +14,5 @@ main() {
 
   print(dossier);
 
+  dossier.generate();
 }

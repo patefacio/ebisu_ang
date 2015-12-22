@@ -2,7 +2,6 @@ part of ebisu_ang.ebisu_ang;
 
 class App extends AngEntity {
   List<String> entryPoints = [];
-  List<Module> modules = [];
 
   // custom <class App>
 

@@ -2,21 +2,36 @@ part of ebisu_ang.ebisu_ang;
 
 class Installation extends AngEntity {
   List<App> apps = [];
-  List<Modules> modules = [];
+  List<Package> packages = [];
 
   // custom <class Installation>
 
   Installation(id) : super(id);
 
-  Iterable<Entity> get children => concat([apps, modules]);
+  Iterable<Entity> get children => concat([apps, packages]);
+
+  set rootPath(String rootPath) => _rootPath = rootPath;
+
+  get rootPath {
+    if (_rootPath == null) {
+      _rootPath = dirname(Platform.script.path);
+    }
+    return _rootPath;
+  }
 
   toString() => brCompact([
-        'Installation(${id.snake})',
-        indentBlock(brCompact([modules, apps]))
+        'Installation(${this.id})',
+        indentBlock(brCompact([packages, apps]))
       ]);
+
+  generate() {
+    setAsRoot();
+    packages.forEach((pkg) => pkg.generate());
+  }
 
   // end <class Installation>
 
+  String _rootPath;
 }
 
 // custom <part ang_installation>

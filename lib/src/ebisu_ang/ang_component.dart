@@ -13,7 +13,8 @@ class Component extends AngEntity {
   List<String> styleUrls = [];
   List<String> pipes = [];
   List<String> viewProviders = [];
-  Class impl;
+  Class controller;
+  List<Class> classes = [];
 
   // custom <class Component>
 
@@ -34,15 +35,6 @@ class Component extends AngEntity {
 class Controller {
   // custom <class Controller>
   // end <class Controller>
-
-}
-
-class View {
-  Template template;
-  List directives;
-
-  // custom <class View>
-  // end <class View>
 
 }
 
