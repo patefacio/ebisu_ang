@@ -109,21 +109,27 @@ A library that supports code generation of Angular2 code
 
           part('ang_component')
           ..classes = [
-            class_('component')
-            ..extend = 'AngEntity'
+
+            class_('component_meta')
             ..members = [
               member('selector'),
               member('template_url')
               ..doc = 'For use when referring to separate file containing template',
-              member('template')
-              ..doc = 'For use when inlining template',
               member('directives')..type = 'List<Directive>'..classInit = [],
               member('styles')..type = 'List<String>'..classInit = [],
               member('style_urls')..type = 'List<String>'..classInit = [],
               member('pipes')..type = 'List<String>'..classInit = [],
               member('view_providers')..type = 'List<String>'..classInit = [],
+            ],
+
+            class_('component')
+            ..extend = 'AngEntity'
+            ..members = [
+              member('meta')..type = 'ComponentMeta',
               member('controller')..type = 'Class',
               member('classes')..type = 'List<Class>'..classInit = [],
+              member('library')..type = 'Library'..access = IA,
+              member('template'),
             ],
 
             class_('controller'),

@@ -14,7 +14,7 @@ class Installation extends AngEntity {
 
   get rootPath {
     if (_rootPath == null) {
-      _rootPath = dirname(Platform.script.path);
+      _rootPath = join(dirname(Platform.script.path), id.snake);
     }
     return _rootPath;
   }

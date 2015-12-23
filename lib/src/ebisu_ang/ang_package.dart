@@ -16,7 +16,9 @@ class Package extends AngEntity {
     print('Generating package $id -> ${owner.id}');
     final rootPath = owner.rootPath;
     final pkg = new System(id)
-      ..rootPath = join(rootPath, 'packages', id.snake);
+      ..rootPath = join(rootPath, 'pkg', id.snake)
+      ..libraries.addAll(components.map((cmp) => cmp.library));
+
     pkg.generate();
   }
 
