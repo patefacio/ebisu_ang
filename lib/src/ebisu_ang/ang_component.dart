@@ -15,11 +15,16 @@ class ComponentMeta {
 
   toString() => brCompact([
         'Meta {',
-        indentBlock(brCompact(
-            [
-              '---- styles ----', styles, '---- styleUrls ----', styleUrls,
-              '---- pipes ---', pipes, '---- veiwProviders ----', viewProviders
-            ])),
+        indentBlock(brCompact([
+          '---- styles ----',
+          styles,
+          '---- styleUrls ----',
+          styleUrls,
+          '---- pipes ---',
+          pipes,
+          '---- veiwProviders ----',
+          viewProviders
+        ])),
         '}'
       ]);
 
@@ -41,14 +46,14 @@ class Component extends AngEntity {
 
   Iterable<Entity> get children => new Iterable<Entity>.generate(0);
 
-  toString() =>
-    brCompact(['Component(${id.snake})',
-      indentBlock(meta.toString()),
-      classes.isEmpty? null : indentBlock(brCompact([
-        '---- Classes ----',
-        classes.map((cls) => cls.className)
-      ]))
-    ]);
+  toString() => brCompact([
+        'Component(${id.snake})',
+        indentBlock(meta.toString()),
+        classes.isEmpty
+            ? null
+            : indentBlock(brCompact(
+                ['---- Classes ----', classes.map((cls) => cls.className)]))
+      ]);
 
   get library {
     if (_library == null) {
