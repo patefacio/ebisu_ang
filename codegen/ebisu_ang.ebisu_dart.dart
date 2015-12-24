@@ -80,6 +80,7 @@ A library that supports code generation of Angular2 code
             class_('template')
             ..extend = 'AngEntity'
             ..members = [
+              member('content'),
             ],
           ],
 
@@ -129,10 +130,8 @@ A library that supports code generation of Angular2 code
               member('controller')..type = 'Class',
               member('classes')..type = 'List<Class>'..classInit = [],
               member('library')..type = 'Library'..access = IA,
-              member('template'),
+              member('template')..type = 'Template',
             ],
-
-            class_('controller'),
           ]
 
 
@@ -152,4 +151,3 @@ ${indentBlock(brCompact(nonGeneratedFiles))}
 
 // custom <ebisuAngEbisuDart global>
 // end <ebisuAngEbisuDart global>
-

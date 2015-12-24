@@ -9,7 +9,7 @@ dependencies:
 
 # custom <ebisu_ang dependencies>
 
-  ebisu: "^0.6.11"
+#  ebisu: "^0.6.11"
 
 # end <ebisu_ang dependencies>
 
@@ -24,6 +24,10 @@ dev_dependencies:
 
 dependency_overrides:
 # custom <ebisu_ang dependency overrides>
+
+  ebisu:
+    git: git://github.com/patefacio/ebisu
+  
 # end <ebisu_ang dependency overrides>
 
 transformers:

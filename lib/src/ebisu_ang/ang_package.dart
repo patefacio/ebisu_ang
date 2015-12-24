@@ -15,9 +15,14 @@ class Package extends AngEntity {
   generate() {
     print('Generating package $id -> ${owner.id}');
     final rootPath = owner.rootPath;
+    final pkgPath = join(rootPath, 'pkg', id.snake);
     final pkg = new System(id)
-      ..rootPath = join(rootPath, 'pkg', id.snake)
+      ..rootPath = pkgPath
       ..libraries.addAll(components.map((cmp) => cmp.library));
+
+    components.forEach((var component) => htmlMergeWithFile(
+        component.template.toString(),
+        join(pkgPath, 'lib', '${component.id.snake}.html')));
 
     pkg.generate();
   }

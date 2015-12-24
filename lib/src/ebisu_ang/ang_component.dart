@@ -36,13 +36,16 @@ class Component extends AngEntity {
   ComponentMeta meta;
   Class controller;
   List<Class> classes = [];
-  String template;
+  Template template;
 
   // custom <class Component>
 
   Component(id)
       : super(id),
-        meta = new ComponentMeta();
+        meta = new ComponentMeta(),
+        template = new Template(id) {
+    controller = class_(id);
+  }
 
   Iterable<Entity> get children => new Iterable<Entity>.generate(0);
 
@@ -57,7 +60,19 @@ class Component extends AngEntity {
 
   get library {
     if (_library == null) {
-      _library = new Library(id);
+
+      controller.annotations = [
+        annotation('''
+Component(
+  selector: '${id.emacs}',
+  templateUrl: '${id.snake}.html'
+)
+''')
+      ];
+
+
+      _library = new Library(id)
+        ..classes.add(controller);
     }
     return _library;
   }
@@ -65,12 +80,6 @@ class Component extends AngEntity {
   // end <class Component>
 
   Library _library;
-}
-
-class Controller {
-  // custom <class Controller>
-  // end <class Controller>
-
 }
 
 // custom <part ang_component>
