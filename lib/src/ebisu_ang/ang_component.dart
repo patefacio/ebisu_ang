@@ -60,18 +60,17 @@ class Component extends AngEntity {
 
   get library {
     if (_library == null) {
-
       controller.annotations = [
         annotation('''
-Component(
+@Component(
   selector: '${id.emacs}',
   templateUrl: '${id.snake}.html'
 )
 ''')
       ];
 
-
       _library = new Library(id)
+        ..imports.add('package:angular2/angular2.dart')
         ..classes.add(controller);
     }
     return _library;

@@ -1,9 +1,11 @@
 library balance_sheet.account;
 
+import 'package:angular2/angular2.dart';
+
 // custom <additional imports>
 // end <additional imports>
 
-Component(
+@Component(
   selector: 'account',
   templateUrl: 'account.html'
 )

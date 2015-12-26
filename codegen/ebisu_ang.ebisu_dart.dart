@@ -101,10 +101,22 @@ A library that supports code generation of Angular2 code
 
           part('ang_package')
           ..classes = [
+
+            class_('index')
+            ..extend = 'AngEntity'
+            ..doc = 'Index html file for a package'
+            ..members = [
+              member('content'),
+            ],
+
             class_('package')
             ..extend = 'AngEntity'
             ..members = [
+              member('path')..access = IA,
               member('components')..type = 'List<Component>'..classInit = [],
+              member('app_component')..type = 'Component'..access = WO,
+              member('main')..type = 'Library'..access = IA,
+              member('index')..type = 'Index'..access = RO,
             ]
           ],
 

@@ -7,9 +7,7 @@ main() {
     installation('dossier')
     ..packages = [
       package('balance_sheet')
-      ..components = [
-        component('account'),
-      ]
+      ..appComponent = component('account'),
     ];
 
   print(dossier);

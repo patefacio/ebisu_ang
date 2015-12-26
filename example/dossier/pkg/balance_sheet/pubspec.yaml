@@ -11,6 +11,10 @@ dev_dependencies:
   browser: "any"
 
 # custom <balance_sheet dev dependencies>
+
+  angular2: "2.0.0-beta.0"
+  angular2_material: "2.0.0-beta.0"
+
 # end <balance_sheet dev dependencies>
 
 dependency_overrides:
@@ -20,5 +24,9 @@ dependency_overrides:
 transformers:
 
 # custom <balance_sheet transformers>
+
+- angular2:
+    entry_points: web/main.dart
+
 # end <balance_sheet transformers>
 
