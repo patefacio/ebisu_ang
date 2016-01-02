@@ -27,10 +27,21 @@ class Package extends AngEntity {
       _path == null ? (_path = join(owner.rootPath, 'pkg', id.snake)) : _path;
 
   generate() {
-    print('Generating package $id -> ${owner.id}');
+
+    _logger.info('Generating $this');
+
     final pkg = new System(id)
       ..rootPath = path
       ..libraries.addAll(components.map((cmp) => cmp.library));
+
+    if(appComponent != null) {
+      pkg.libraries.add(appComponent.library);
+    }
+
+    _logger.info(brCompact([
+      'Generating package $id -> ${owner.id} with libs(${pkg.libraries.length}):',
+      indentBlock(brCompact(pkg.libraries.map((l)=>l.id.snake))),
+    ]));
 
     components.forEach(_makeComponent);
     if (_appComponent != null) {
@@ -41,8 +52,9 @@ class Package extends AngEntity {
 
     final webPath = join(path, 'web');
     main.path = webPath;
-    if(_appComponent != null) {
-      main.libMain = 'main([List<String> args]) => bootstrap(${appComponent.controller.name});';
+    if (_appComponent != null) {
+      main.libMain =
+          'main([List<String> args]) => bootstrap(${appComponent.controller.name});';
     }
 
     main.generate();
