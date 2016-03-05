@@ -9,7 +9,7 @@ dependencies:
 
 # custom <ebisu_ang dependencies>
 
-#  ebisu: "^0.6.11"
+ebisu: "^0.6.16"
 
 # end <ebisu_ang dependencies>
 
@@ -20,13 +20,20 @@ dev_dependencies:
   hop_docgen: "any"
 
 # custom <ebisu_ang dev dependencies>
+
+  test: "any"
+  
+  drudge:
+    git: git://github.com/patefacio/drudge
+
 # end <ebisu_ang dev dependencies>
 
 dependency_overrides:
 # custom <ebisu_ang dependency overrides>
 
-  ebisu:
-    git: git://github.com/patefacio/ebisu
+#  ebisu:
+#    git: git://github.com/patefacio/ebisu
+#    path: ../ebisu
   
 # end <ebisu_ang dependency overrides>
 

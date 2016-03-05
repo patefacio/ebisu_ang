@@ -32,6 +32,18 @@ class ComponentMeta {
 
 }
 
+class Input {
+  // custom <class Input>
+  // end <class Input>
+
+}
+
+class Output {
+  // custom <class Output>
+  // end <class Output>
+
+}
+
 class Component extends AngEntity {
   ComponentMeta meta;
   Class controller;
