@@ -51,6 +51,42 @@ A library that supports code generation of Angular2 code
         ..defaultMemberAccess = RO
         ..importAndExport('entity.dart')
         ..classes = [
+          class_('io_expr')
+            ..defaultCtorStyle = requiredParms
+            ..members = [member('expr'),],
+          class_('i_expr')..extend = 'IoExpr',
+          class_('o_expr')..extend = 'IoExpr',
+          class_('input')
+            ..mixins = ['Htmlable', 'Identifiable']
+            ..hasCtorSansNew = true
+            ..members = [
+              member('target')
+              ..doc = 'The target on the componen, usually a component member, receiving the input'
+              ..access = IA
+              ..ctors = [''],
+              member('i_expr')
+                ..ctors = ['']
+                ..type = 'IExpr'
+                ..doc = 'The right-hand side expression',
+              member('is_html_class')
+                ..doc = '''
+Used to specify classes as input configuration - (See *ng-book2* - *How Angular
+Works* - *search* "is a fun one")
+'''
+              ..ctorsOpt = ['']
+                ..init = false,
+            ],
+          class_('output')
+            ..mixins = ['Htmlable', 'Identifiable']
+            ..hasCtorSansNew = true
+            ..members = [
+              member('event')..ctorsOpt = [''],
+              member('action')
+                ..ctorsOpt = ['']
+                ..type = 'OExpr'
+                ..doc = 'The right-hand side expression - which is the action performed *on the client*',
+            ],
+
           class_('component_annotation')
             ..defaultCtorStyle = namedParms
             ..hasCtorSansNew = true
@@ -62,6 +98,12 @@ A library that supports code generation of Angular2 code
                     'For use when referring to separate file containing template',
               member('directives')
                 ..type = 'List<Directive>'
+                ..classInit = [],
+              member('inputs')
+                ..type = 'List<String>'
+                ..classInit = [],
+              member('outputs')
+                ..type = 'List<String>'
                 ..classInit = [],
               member('styles')
                 ..type = 'List<String>'
@@ -75,31 +117,6 @@ A library that supports code generation of Angular2 code
               member('view_providers')
                 ..type = 'List<String>'
                 ..classInit = [],
-            ],
-          class_('io_expr')
-            ..defaultCtorStyle = requiredParms
-            ..members = [member('expr'),],
-          class_('i_expr')..extend = 'IoExpr',
-          class_('o_expr')..extend = 'IoExpr',
-          class_('input')
-            ..mixins = ['Htmlable', 'Identifiable']
-            ..hasCtorSansNew = true
-            ..members = [
-              member('target')..ctorsOpt = [''],
-              member('i_expr')
-                ..ctorsOpt = ['']
-                ..type = 'IExpr'
-                ..doc = 'The right-hand side expression',
-            ],
-          class_('output')
-            ..mixins = ['Htmlable', 'Identifiable']
-            ..hasCtorSansNew = true
-            ..members = [
-              member('handler')..ctorsOpt = [''],
-              member('o_expr')
-                ..ctorsOpt = ['']
-                ..type = 'OExpr'
-                ..doc = 'The right-hand side expression',
             ],
           class_('template')
             ..defaultCtorStyle = namedParms

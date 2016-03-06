@@ -30,6 +30,7 @@ main([List<String> args]) {
 
   print((new IoExpr('boo')).htmlAttrVal);
   print((input('bam', new IExpr('boo'))).html);
+  print((input('selected', new IExpr('boo'), true)).html);
   print((output('bam', new OExpr('bammama(\$event)'))).html);
 
 // end <main>
