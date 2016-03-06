@@ -121,23 +121,81 @@ ComponentAnnotation componentAnnotation(
         pipes: pipes,
         viewProviders: viewProviders);
 
-class Input extends Object with Identifiable {
+class IoExpr {
+  IoExpr(this._expr);
+
+  String get expr => _expr;
+
+  // custom <class IoExpr>
+
+  get htmlAttrVal => ebisu.smartDoubleQuote(expr);
+
+  // end <class IoExpr>
+
+  String _expr;
+}
+
+class IExpr extends IoExpr {
+  // custom <class IExpr>
+
+  IExpr(expr) : super(expr);
+
+  // end <class IExpr>
+
+}
+
+class OExpr extends IoExpr {
+  // custom <class OExpr>
+
+  OExpr(expr) : super(expr);
+
+  // end <class OExpr>
+
+}
+
+class Input extends Object with Htmlable, Identifiable {
+  Input([this._target, this._iExpr]);
+
   String get target => _target;
 
+  /// The right-hand side expression
+  IExpr get iExpr => _iExpr;
+
   // custom <class Input>
+
+  get expr => _iExpr;
+  get html => '[$_target] = ${expr.htmlAttrVal}';
+
   // end <class Input>
 
   String _target;
+  IExpr _iExpr;
 }
 
-class Output extends Object with Identifiable {
+/// Create Input without new, for more declarative construction
+Input input([String target, IExpr iExpr]) => new Input(target, iExpr);
+
+class Output extends Object with Htmlable, Identifiable {
+  Output([this._handler, this._oExpr]);
+
   String get handler => _handler;
 
+  /// The right-hand side expression
+  OExpr get oExpr => _oExpr;
+
   // custom <class Output>
+
+  get expr => _oExpr;
+  get html => '($_handler) = ${expr.htmlAttrVal}';
+
   // end <class Output>
 
   String _handler;
+  OExpr _oExpr;
 }
+
+/// Create Output without new, for more declarative construction
+Output output([String handler, OExpr oExpr]) => new Output(handler, oExpr);
 
 class Template {
   Template({content}) : _content = content;
@@ -174,4 +232,8 @@ class Component extends Object with Entity {
 }
 
 // custom <library component>
+
+IExpr iExpr(expr) => new IExpr(expr);
+OExpr oExpr(expr) => new OExpr(expr);
+
 // end <library component>
