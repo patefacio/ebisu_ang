@@ -49,7 +49,7 @@ class Input extends Object with Htmlable, Identifiable {
   IExpr get iExpr => _iExpr;
 
   /// Used to specify classes as input configuration - (See *ng-book2* - *How Angular
-  /// Wroks* - *search* "is a fun one")
+  /// Works* - *search* "is a fun one")
   bool get isHtmlClass => _isHtmlClass;
 
   // custom <class Input>
@@ -102,6 +102,7 @@ class ComponentAnnotation {
       directives,
       inputs,
       outputs,
+      host,
       styles,
       styleUrls,
       pipes,
@@ -111,6 +112,7 @@ class ComponentAnnotation {
         _directives = directives ?? [],
         _inputs = inputs ?? [],
         _outputs = outputs ?? [],
+        _host = host ?? {},
         _styles = styles ?? [],
         _styleUrls = styleUrls ?? [],
         _pipes = pipes ?? [],
@@ -123,6 +125,10 @@ class ComponentAnnotation {
   List<Directive> get directives => _directives;
   List<String> get inputs => _inputs;
   List<String> get outputs => _outputs;
+
+  /// Enables setting attributes on the *host* element. (See *ng-book2* - *How Angular
+  /// Works* - *search* "host option lets us set")
+  Map get host => _host;
   List<String> get styles => _styles;
   List<String> get styleUrls => _styleUrls;
   List<String> get pipes => _pipes;
@@ -139,6 +145,7 @@ class ComponentAnnotation {
         "directives": ebisu.toJson(directives),
         "inputs": ebisu.toJson(inputs),
         "outputs": ebisu.toJson(outputs),
+        "host": ebisu.toJson(host),
         "styles": ebisu.toJson(styles),
         "styleUrls": ebisu.toJson(styleUrls),
         "pipes": ebisu.toJson(pipes),
@@ -166,6 +173,9 @@ class ComponentAnnotation {
         // outputs is List<String>
         _outputs =
             ebisu.constructListFromJsonData(jsonMap["outputs"], (data) => data),
+        // host is Map
+        _host =
+            ebisu.constructMapFromJsonData(jsonMap["host"], (value) => value),
         // styles is List<String>
         _styles =
             ebisu.constructListFromJsonData(jsonMap["styles"], (data) => data),
@@ -189,6 +199,7 @@ class ComponentAnnotation {
         _inputs = other._inputs == null ? null : new List.from(other._inputs),
         _outputs =
             other._outputs == null ? null : new List.from(other._outputs),
+        _host = valueApply(other._host, (v) => v == null ? null : v.copy()),
         _styles = other._styles == null ? null : new List.from(other._styles),
         _styleUrls =
             other._styleUrls == null ? null : new List.from(other._styleUrls),
@@ -202,6 +213,7 @@ class ComponentAnnotation {
   List<Directive> _directives = [];
   List<String> _inputs = [];
   List<String> _outputs = [];
+  Map _host = {};
   List<String> _styles = [];
   List<String> _styleUrls = [];
   List<String> _pipes = [];
@@ -215,6 +227,7 @@ ComponentAnnotation componentAnnotation(
         List<Directive> directives,
         List<String> inputs,
         List<String> outputs,
+        Map host,
         List<String> styles,
         List<String> styleUrls,
         List<String> pipes,
@@ -225,6 +238,7 @@ ComponentAnnotation componentAnnotation(
         directives: directives,
         inputs: inputs,
         outputs: outputs,
+        host: host,
         styles: styles,
         styleUrls: styleUrls,
         pipes: pipes,

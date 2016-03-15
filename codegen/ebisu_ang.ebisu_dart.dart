@@ -105,6 +105,12 @@ Works* - *search* "is a fun one")
               member('outputs')
                 ..type = 'List<String>'
                 ..classInit = [],
+              member('host')
+              ..doc = '''
+Enables setting attributes on the *host* element. (See *ng-book2* - *How Angular
+Works* - *search* "host option lets us set")'''
+                ..type = 'Map'
+                ..classInit = {},
               member('styles')
                 ..type = 'List<String>'
                 ..classInit = [],
@@ -117,7 +123,7 @@ Works* - *search* "is a fun one")
               member('view_providers')
                 ..type = 'List<String>'
                 ..classInit = [],
-            ],
+              ],
           class_('template')
             ..defaultCtorStyle = namedParms
             ..members = [member('content'),],
@@ -275,3 +281,4 @@ ${indentBlock(brCompact(nonGeneratedFiles))}
 
 // custom <ebisuAngEbisuDart global>
 // end <ebisuAngEbisuDart global>
+
