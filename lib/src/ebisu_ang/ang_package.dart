@@ -50,7 +50,9 @@ class Package extends AngEntity {
     pkg.generate();
 
     final webPath = join(path, 'web');
-    main.path = webPath;
+    main
+      ..path = webPath
+      ..owner = pkg;
     if (_appComponent != null) {
       main
         ..imports.addAll(
