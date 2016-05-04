@@ -208,6 +208,14 @@ Works* - *search* "host option lets us set")'''
                 ..extend = 'AngEntity'
                 ..doc = 'Index html file for a package'
                 ..members = [member('content'),],
+
+              class_('ang_transformer')
+              ..extend = 'PubTransformer'
+              ..defaultCtorStyle = namedParms
+              ..members = [
+                member('entry_points')..type = 'List<String>'..init = [],
+              ],
+
               class_('package')
                 ..extend = 'AngEntity'
                 ..members = [
@@ -281,4 +289,3 @@ ${indentBlock(brCompact(nonGeneratedFiles))}
 
 // custom <ebisuAngEbisuDart global>
 // end <ebisuAngEbisuDart global>
-

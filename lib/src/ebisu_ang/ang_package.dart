@@ -9,6 +9,25 @@ class Index extends AngEntity {
 
 }
 
+class AngTransformer extends PubTransformer {
+
+  List<String> entryPoints = [];
+
+  // custom <class AngTransformer>
+
+  AngTransformer({entryPoints}) : super('angular2'), entryPoints = entryPoints ?? [];
+
+  String get yamlEntry =>
+    '''
+- angular2:
+    entry_points:
+${indentBlock(brCompact(entryPoints.map((ep) => "- $ep")), '      ')}
+''';
+
+  // end <class AngTransformer>
+
+}
+
 class Package extends AngEntity {
   List<Component> components = [];
   set appComponent(Component appComponent) => _appComponent = appComponent;
@@ -31,6 +50,10 @@ class Package extends AngEntity {
 
     final pkg = new System(id)
       ..rootPath = path
+      ..pubSpec.dependencies.addAll([
+        new PubDependency('angular2')..version = '2.0.0-beta.17',
+        new PubDependency('browser')..version = '^0.10.0',
+      ])
       ..libraries.addAll(components.map((cmp) => cmp.library));
 
     if (appComponent != null) {
@@ -45,6 +68,7 @@ class Package extends AngEntity {
     components.forEach(_makeComponent);
     if (_appComponent != null) {
       _makeComponent(_appComponent);
+      pkg.pubSpec.pubTransformers.add(new AngTransformer(entryPoints:['web/main.dart']));
     }
 
     pkg.generate();
@@ -56,9 +80,25 @@ class Package extends AngEntity {
     if (_appComponent != null) {
       main
         ..imports.addAll(
-            ['package:angular2/bootstrap.dart', appComponent.library.asImport,])
+            ['package:angular2/platform/browser.dart', appComponent.library.asImport,])
         ..libMain =
             'main([List<String> args]) => bootstrap(${appComponent.controller.name});';
+
+      htmlMergeWithFile('''
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  </head>
+  <body>
+    <my-element></my-element>
+    <script type="application/dart" src="main.dart"></script>
+    <script src="packages/browser/dart.js"></script>
+  </body>
+</html>
+''', join(webPath, 'index.html'));
+
     }
 
     main.generate();
