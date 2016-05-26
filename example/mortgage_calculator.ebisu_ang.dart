@@ -8,7 +8,7 @@ main() {
       print("${r.loggerName} [${r.level}]:\t${r.message}"));
   Logger.root.level = Level.OFF;
 
-  final dossier =
+  final mortgageCalculator =
     installation('mortgage_calculator')
     ..packages = [
       package('mortgage_calculator')
@@ -19,5 +19,5 @@ main() {
       ]
     ];
 
-  dossier.generate();
+  mortgageCalculator.generate();
 }
