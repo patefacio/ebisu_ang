@@ -10,15 +10,15 @@ class Index extends AngEntity {
 }
 
 class AngTransformer extends PubTransformer {
-
   List<String> entryPoints = [];
 
   // custom <class AngTransformer>
 
-  AngTransformer({entryPoints}) : super('angular2'), entryPoints = entryPoints ?? [];
+  AngTransformer({entryPoints})
+      : super('angular2'),
+        entryPoints = entryPoints ?? [];
 
-  String get yamlEntry =>
-    '''
+  String get yamlEntry => '''
 - angular2:
     entry_points:
 ${indentBlock(brCompact(entryPoints.map((ep) => "- $ep")), '      ')}
@@ -68,7 +68,8 @@ class Package extends AngEntity {
     components.forEach(_makeComponent);
     if (_appComponent != null) {
       _makeComponent(_appComponent);
-      pkg.pubSpec.pubTransformers.add(new AngTransformer(entryPoints:['web/main.dart']));
+      pkg.pubSpec.pubTransformers
+          .add(new AngTransformer(entryPoints: ['web/main.dart']));
     }
 
     pkg.generate();
@@ -79,12 +80,15 @@ class Package extends AngEntity {
       ..owner = pkg;
     if (_appComponent != null) {
       main
-        ..imports.addAll(
-            ['package:angular2/platform/browser.dart', appComponent.library.asImport,])
+        ..imports.addAll([
+          'package:angular2/platform/browser.dart',
+          appComponent.library.asImport,
+        ])
         ..libMain =
             'main([List<String> args]) => bootstrap(${appComponent.controller.name});';
 
-      htmlMergeWithFile('''
+      htmlMergeWithFile(
+          '''
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -97,8 +101,8 @@ class Package extends AngEntity {
     <script src="packages/browser/dart.js"></script>
   </body>
 </html>
-''', join(webPath, 'index.html'));
-
+''',
+          join(webPath, 'index.html'));
     }
 
     main.generate();

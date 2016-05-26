@@ -211,7 +211,6 @@ Works* - *search* "host option lets us set")'''
 
               class_('ang_transformer')
               ..extend = 'PubTransformer'
-              ..defaultCtorStyle = namedParms
               ..members = [
                 member('entry_points')..type = 'List<String>'..init = [],
               ],
