@@ -1,5 +1,7 @@
 library ebisu_ang.entity;
 
+import 'package:id/id.dart';
+
 // custom <additional imports>
 // end <additional imports>
 

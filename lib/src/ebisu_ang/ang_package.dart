@@ -5,6 +5,9 @@ class Index extends AngEntity {
   String content;
 
   // custom <class Index>
+
+  Index([id]) : super(id ?? 'index');
+
   // end <class Index>
 
 }
@@ -94,11 +97,11 @@ class Package extends AngEntity {
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  </head>
-  <body>
-    <my-element></my-element>
     <script type="application/dart" src="main.dart"></script>
     <script src="packages/browser/dart.js"></script>
+  </head>
+  <body>
+    <${_appComponent.tag}></${_appComponent.tag}>
   </body>
 </html>
 ''',

@@ -83,7 +83,7 @@ class Output extends Object with Htmlable, Identifiable {
 
   // custom <class Output>
 
-  get expr => _oExpr;
+  get expr => action;
   get html => '($_event)=${action.htmlAttrVal}';
 
   // end <class Output>

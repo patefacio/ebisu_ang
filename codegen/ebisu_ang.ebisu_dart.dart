@@ -5,13 +5,14 @@ import 'package:ebisu/ebisu.dart';
 import 'package:ebisu/ebisu_dart_meta.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
+
 // custom <additional imports>
 // end <additional imports>
 final _logger = new Logger('ebisuAngEbisuDart');
 
 main(List<String> args) {
-  Logger.root.onRecord.listen((LogRecord r) =>
-      print("${r.loggerName} [${r.level}]:\t${r.message}"));
+  Logger.root.onRecord.listen(
+      (LogRecord r) => print("${r.loggerName} [${r.level}]:\t${r.message}"));
   Logger.root.level = Level.OFF;
   useDartFormatter = true;
   String here = absolute(Platform.script.toFilePath());
@@ -34,6 +35,7 @@ A library that supports code generation of Angular2 code
     ..testLibraries = [library('test_component'), library('test_entity'),]
     ..libraries = [
       library('entity')
+        ..imports = ['package:id/id.dart']
         ..classes = [
           class_('identifiable')
             ..isAbstract = true
@@ -61,9 +63,10 @@ A library that supports code generation of Angular2 code
             ..hasCtorSansNew = true
             ..members = [
               member('target')
-              ..doc = 'The target on the componen, usually a component member, receiving the input'
-              ..access = IA
-              ..ctors = [''],
+                ..doc =
+                    'The target on the componen, usually a component member, receiving the input'
+                ..access = IA
+                ..ctors = [''],
               member('i_expr')
                 ..ctors = ['']
                 ..type = 'IExpr'
@@ -73,7 +76,7 @@ A library that supports code generation of Angular2 code
 Used to specify classes as input configuration - (See *ng-book2* - *How Angular
 Works* - *search* "is a fun one")
 '''
-              ..ctorsOpt = ['']
+                ..ctorsOpt = ['']
                 ..init = false,
             ],
           class_('output')
@@ -84,9 +87,9 @@ Works* - *search* "is a fun one")
               member('action')
                 ..ctorsOpt = ['']
                 ..type = 'OExpr'
-                ..doc = 'The right-hand side expression - which is the action performed *on the client*',
+                ..doc =
+                    'The right-hand side expression - which is the action performed *on the client*',
             ],
-
           class_('component_annotation')
             ..defaultCtorStyle = namedParms
             ..hasCtorSansNew = true
@@ -106,7 +109,7 @@ Works* - *search* "is a fun one")
                 ..type = 'List<String>'
                 ..classInit = [],
               member('host')
-              ..doc = '''
+                ..doc = '''
 Enables setting attributes on the *host* element. (See *ng-book2* - *How Angular
 Works* - *search* "host option lets us set")'''
                 ..type = 'Map'
@@ -123,7 +126,7 @@ Works* - *search* "host option lets us set")'''
               member('view_providers')
                 ..type = 'List<String>'
                 ..classInit = [],
-              ],
+            ],
           class_('template')
             ..defaultCtorStyle = namedParms
             ..members = [member('content'),],
@@ -208,13 +211,13 @@ Works* - *search* "host option lets us set")'''
                 ..extend = 'AngEntity'
                 ..doc = 'Index html file for a package'
                 ..members = [member('content'),],
-
               class_('ang_transformer')
-              ..extend = 'PubTransformer'
-              ..members = [
-                member('entry_points')..type = 'List<String>'..init = [],
-              ],
-
+                ..extend = 'PubTransformer'
+                ..members = [
+                  member('entry_points')
+                    ..type = 'List<String>'
+                    ..init = [],
+                ],
               class_('package')
                 ..extend = 'AngEntity'
                 ..members = [
@@ -233,46 +236,6 @@ Works* - *search* "host option lets us set")'''
                     ..access = RO,
                 ]
             ],
-          part('ang_component')
-            ..classes = [
-              class_('component_meta')
-                ..members = [
-                  member('selector'),
-                  member('template_url')
-                    ..doc =
-                        'For use when referring to separate file containing template',
-                  member('directives')
-                    ..type = 'List<Directive>'
-                    ..classInit = [],
-                  member('styles')
-                    ..type = 'List<String>'
-                    ..classInit = [],
-                  member('style_urls')
-                    ..type = 'List<String>'
-                    ..classInit = [],
-                  member('pipes')
-                    ..type = 'List<String>'
-                    ..classInit = [],
-                  member('view_providers')
-                    ..type = 'List<String>'
-                    ..classInit = [],
-                ],
-              class_('input'),
-              class_('output'),
-              class_('component')
-                ..extend = 'AngEntity'
-                ..members = [
-                  member('meta')..type = 'ComponentMeta',
-                  member('controller')..type = 'Class',
-                  member('classes')
-                    ..type = 'List<Class>'
-                    ..classInit = [],
-                  member('library')
-                    ..type = 'Library'
-                    ..access = IA,
-                  member('template')..type = 'Template',
-                ],
-            ]
         ]
     ];
 

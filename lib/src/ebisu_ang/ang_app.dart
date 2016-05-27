@@ -7,6 +7,8 @@ class App extends AngEntity {
 
   App(id) : super(id);
 
+  Iterable<Entity> get children => new Iterable<Entity>.generate(0);
+
   // end <class App>
 
 }

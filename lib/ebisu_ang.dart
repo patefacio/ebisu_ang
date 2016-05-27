@@ -12,7 +12,6 @@ import 'package:quiver/iterables.dart';
 // end <additional imports>
 
 part 'src/ebisu_ang/ang_app.dart';
-part 'src/ebisu_ang/ang_component.dart';
 part 'src/ebisu_ang/ang_directive.dart';
 part 'src/ebisu_ang/ang_entity.dart';
 part 'src/ebisu_ang/ang_installation.dart';

@@ -5,6 +5,11 @@ class Directive extends AngEntity {
   List<String> providers = [];
 
   // custom <class Directive>
+
+  Directive(id) : super(id);
+
+  Iterable<Entity> get children => new Iterable<Entity>.generate(0);
+
   // end <class Directive>
 
 }

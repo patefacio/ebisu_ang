@@ -9,11 +9,14 @@ class Template extends AngEntity {
     if (content == null) {
       content = '''
 <div>
+<em>generated component - ${id}</em>
 ${htmlCustomBlock(this.id.snake)}
 </div>
 ''';
     }
   }
+
+  Iterable<Entity> get children => new Iterable<Entity>.generate(0);
 
   toString() => content;
 
