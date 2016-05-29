@@ -1,6 +1,7 @@
 import 'package:ebisu_ang/ebisu_ang.dart';
 import 'package:ebisu/ebisu.dart';
 import 'package:logging/logging.dart';
+import 'package:ebisu_ang/component.dart';
 
 main() {
 

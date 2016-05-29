@@ -38,19 +38,43 @@ A library that supports code generation of Angular2 code
         ..imports = ['package:id/id.dart']
         ..classes = [
           class_('identifiable')
-            ..isAbstract = true
+            ..isAbstract = false
+            ..defaultCtorStyle = requiredParms
             ..members = [
               member('id')
                 ..doc = 'Id for the [Identifiable]'
+                ..access = RO
                 ..type = 'Id',
             ],
           class_('entity')
-            ..isAbstract = true
-            ..mixins = ['Identifiable'],
-          class_('htmlable')..isAbstract = true,
+            ..hasJsonToString = false
+            ..withDefaultCtor((ctor) => ctor..frontParms = ['id']..superArgs = ['id'])
+            ..extend = 'Identifiable',
+          class_('htmlable')
+            ..isAbstract = true,
+        ],
+      library('directive')
+      ..imports = [ 'package:ebisu_ang/entity.dart']
+        ..defaultMemberAccess = RO
+        ..classes = [
+          class_('directive')
+          ..withDefaultCtor((ctor) => ctor..frontParms = ['id']..superArgs = ['id'])
+            ..extend = 'Entity'
+            ..hasJsonToString = false
+            ..members = [
+              member('selector'),
+              member('providers')
+                ..type = 'List<String>'
+                ..init = [],
+            ]
         ],
       library('component')
         ..defaultMemberAccess = RO
+        ..imports.addAll([
+          "'package:ebisu/ebisu.dart' as ebisu",
+        'package:ebisu/ebisu_dart_meta.dart',
+        'package:ebisu_ang/directive.dart'
+        ])
         ..importAndExport('entity.dart')
         ..classes = [
           class_('io_expr')
@@ -59,7 +83,9 @@ A library that supports code generation of Angular2 code
           class_('i_expr')..extend = 'IoExpr',
           class_('o_expr')..extend = 'IoExpr',
           class_('input')
-            ..mixins = ['Htmlable', 'Identifiable']
+            ..extend = 'Identifiable'
+            ..implement = ['Htmlable', ]
+            ..withDefaultCtor((ctor) => ctor..superArgs = ['id']..frontParms = ['id'])
             ..hasCtorSansNew = true
             ..members = [
               member('target')
@@ -80,7 +106,9 @@ Works* - *search* "is a fun one")
                 ..init = false,
             ],
           class_('output')
-            ..mixins = ['Htmlable', 'Identifiable']
+            ..extend = 'Identifiable'
+            ..implement = ['Htmlable', ]
+            ..withDefaultCtor((ctor) => ctor..superArgs = ['id']..frontParms = ['id'])
             ..hasCtorSansNew = true
             ..members = [
               member('event')..ctorsOpt = [''],
@@ -93,7 +121,7 @@ Works* - *search* "is a fun one")
           class_('component_annotation')
             ..defaultCtorStyle = namedParms
             ..hasCtorSansNew = true
-            ..hasJsonToString = true
+            ..hasJsonToString = false
             ..members = [
               member('selector'),
               member('template_url')
@@ -101,44 +129,46 @@ Works* - *search* "is a fun one")
                     'For use when referring to separate file containing template',
               member('directives')
                 ..type = 'List<Directive>'
-                ..classInit = [],
+                ..init = [],
               member('inputs')
                 ..type = 'List<String>'
-                ..classInit = [],
+                ..init = [],
               member('outputs')
                 ..type = 'List<String>'
-                ..classInit = [],
+                ..init = [],
               member('host')
                 ..doc = '''
 Enables setting attributes on the *host* element. (See *ng-book2* - *How Angular
 Works* - *search* "host option lets us set")'''
                 ..type = 'Map'
-                ..classInit = {},
+                ..init = {},
               member('styles')
                 ..type = 'List<String>'
-                ..classInit = [],
+                ..init = [],
               member('style_urls')
                 ..type = 'List<String>'
-                ..classInit = [],
+                ..init = [],
               member('pipes')
                 ..type = 'List<String>'
-                ..classInit = [],
+                ..init = [],
               member('view_providers')
                 ..type = 'List<String>'
-                ..classInit = [],
+                ..init = [],
             ],
           class_('template')
             ..defaultCtorStyle = namedParms
             ..members = [member('content'),],
           class_('component')
+          ..withDefaultCtor((Ctor ctor) => ctor..frontParms = ['id']..superArgs = ['id'])
             ..defaultCtorStyle = namedParms
-            ..mixins = ['Entity']
+            ..extend = 'Entity'
+            ..hasCtorSansNew = true
             ..members = [
               member('annotation')..type = 'ComponentAnnotation',
               member('controller')..type = 'Class',
               member('classes')
                 ..type = 'List<Class>'
-                ..classInit = [],
+                ..init = [],
               member('library')
                 ..type = 'Library'
                 ..access = IA,
@@ -164,10 +194,10 @@ Works* - *search* "host option lets us set")'''
                   member('root_path')..access = IA,
                   member('apps')
                     ..type = 'List<App>'
-                    ..classInit = [],
+                    ..init = [],
                   member('packages')
                     ..type = 'List<Package>'
-                    ..classInit = [],
+                    ..init = [],
                 ]
             ],
           part('ang_app')
@@ -177,7 +207,7 @@ Works* - *search* "host option lets us set")'''
                 ..members = [
                   member('entry_points')
                     ..type = 'List<String>'
-                    ..classInit = [],
+                    ..init = [],
                 ],
             ],
           part('ang_entity')
@@ -201,7 +231,7 @@ Works* - *search* "host option lets us set")'''
                   member('selector'),
                   member('providers')
                     ..type = 'List<String>'
-                    ..classInit = [],
+                    ..init = [],
                 ]
             ],
           part('ang_model')..classes = [class_('model')],
@@ -224,7 +254,7 @@ Works* - *search* "host option lets us set")'''
                   member('path')..access = IA,
                   member('components')
                     ..type = 'List<Component>'
-                    ..classInit = [],
+                    ..init = [],
                   member('app_component')
                     ..type = 'Component'
                     ..access = WO,

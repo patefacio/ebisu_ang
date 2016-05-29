@@ -1,8 +1,9 @@
 library ebisu_ang.component;
 
-import 'dart:convert' as convert;
 import 'entity.dart';
 import 'package:ebisu/ebisu.dart' as ebisu;
+import 'package:ebisu/ebisu_dart_meta.dart';
+import 'package:ebisu_ang/directive.dart';
 
 export 'entity.dart';
 
@@ -41,9 +42,10 @@ class OExpr extends IoExpr {
 
 }
 
-class Input extends Object with Htmlable, Identifiable {
-  Input(this._target, this._iExpr, [isHtmlClass])
-      : _isHtmlClass = isHtmlClass ?? false;
+class Input extends Identifiable implements Htmlable {
+  Input(id, this._target, this._iExpr, [isHtmlClass])
+      : super(id),
+        _isHtmlClass = isHtmlClass ?? false;
 
   /// The right-hand side expression
   IExpr get iExpr => _iExpr;
@@ -70,11 +72,11 @@ class Input extends Object with Htmlable, Identifiable {
 }
 
 /// Create Input without new, for more declarative construction
-Input input(String target, IExpr iExpr, [bool isHtmlClass]) =>
-    new Input(target, iExpr, isHtmlClass);
+Input input(id, String target, IExpr iExpr, [bool isHtmlClass]) =>
+    new Input(id, target, iExpr, isHtmlClass);
 
-class Output extends Object with Htmlable, Identifiable {
-  Output([this._event, this._action]);
+class Output extends Identifiable implements Htmlable {
+  Output(id, [this._event, this._action]) : super(id);
 
   String get event => _event;
 
@@ -93,7 +95,8 @@ class Output extends Object with Htmlable, Identifiable {
 }
 
 /// Create Output without new, for more declarative construction
-Output output([String event, OExpr action]) => new Output(event, action);
+Output output(id, [String event, OExpr action]) =>
+    new Output(id, event, action);
 
 class ComponentAnnotation {
   ComponentAnnotation(
@@ -136,77 +139,6 @@ class ComponentAnnotation {
 
   // custom <class ComponentAnnotation>
   // end <class ComponentAnnotation>
-
-  toString() => '(${runtimeType}) => ${ebisu.prettyJsonMap(toJson())}';
-
-  Map toJson() => {
-        "selector": ebisu.toJson(selector),
-        "templateUrl": ebisu.toJson(templateUrl),
-        "directives": ebisu.toJson(directives),
-        "inputs": ebisu.toJson(inputs),
-        "outputs": ebisu.toJson(outputs),
-        "host": ebisu.toJson(host),
-        "styles": ebisu.toJson(styles),
-        "styleUrls": ebisu.toJson(styleUrls),
-        "pipes": ebisu.toJson(pipes),
-        "viewProviders": ebisu.toJson(viewProviders),
-      };
-
-  static ComponentAnnotation fromJson(Object json) {
-    if (json == null) return null;
-    if (json is String) {
-      json = convert.JSON.decode(json);
-    }
-    assert(json is Map);
-    return new ComponentAnnotation._fromJsonMapImpl(json);
-  }
-
-  ComponentAnnotation._fromJsonMapImpl(Map jsonMap)
-      : _selector = jsonMap["selector"],
-        _templateUrl = jsonMap["templateUrl"],
-        // directives is List<Directive>
-        _directives = ebisu.constructListFromJsonData(
-            jsonMap["directives"], (data) => Directive.fromJson(data)),
-        // inputs is List<String>
-        _inputs =
-            ebisu.constructListFromJsonData(jsonMap["inputs"], (data) => data),
-        // outputs is List<String>
-        _outputs =
-            ebisu.constructListFromJsonData(jsonMap["outputs"], (data) => data),
-        // host is Map
-        _host =
-            ebisu.constructMapFromJsonData(jsonMap["host"], (value) => value),
-        // styles is List<String>
-        _styles =
-            ebisu.constructListFromJsonData(jsonMap["styles"], (data) => data),
-        // styleUrls is List<String>
-        _styleUrls = ebisu.constructListFromJsonData(
-            jsonMap["styleUrls"], (data) => data),
-        // pipes is List<String>
-        _pipes =
-            ebisu.constructListFromJsonData(jsonMap["pipes"], (data) => data),
-        // viewProviders is List<String>
-        _viewProviders = ebisu.constructListFromJsonData(
-            jsonMap["viewProviders"], (data) => data);
-
-  ComponentAnnotation._copy(ComponentAnnotation other)
-      : _selector = other._selector,
-        _templateUrl = other._templateUrl,
-        _directives = other._directives == null
-            ? null
-            : (new List.from(
-                other._directives.map((e) => e == null ? null : e.copy()))),
-        _inputs = other._inputs == null ? null : new List.from(other._inputs),
-        _outputs =
-            other._outputs == null ? null : new List.from(other._outputs),
-        _host = valueApply(other._host, (v) => v == null ? null : v.copy()),
-        _styles = other._styles == null ? null : new List.from(other._styles),
-        _styleUrls =
-            other._styleUrls == null ? null : new List.from(other._styleUrls),
-        _pipes = other._pipes == null ? null : new List.from(other._pipes),
-        _viewProviders = other._viewProviders == null
-            ? null
-            : new List.from(other._viewProviders);
 
   String _selector;
   String _templateUrl;
@@ -255,9 +187,10 @@ class Template {
   String _content;
 }
 
-class Component extends Object with Entity {
-  Component({annotation, controller, classes, library, template})
-      : _annotation = annotation,
+class Component extends Entity {
+  Component(id, {annotation, controller, classes, library, template})
+      : super(id),
+        _annotation = annotation,
         _controller = controller,
         _classes = classes ?? [],
         _library = library,
@@ -269,6 +202,7 @@ class Component extends Object with Entity {
   Template get template => _template;
 
   // custom <class Component>
+
   // end <class Component>
 
   ComponentAnnotation _annotation;
@@ -277,6 +211,20 @@ class Component extends Object with Entity {
   Library _library;
   Template _template;
 }
+
+/// Create Component without new, for more declarative construction
+Component component(id,
+        {ComponentAnnotation annotation,
+        Class controller,
+        List<Class> classes,
+        Library library,
+        Template template}) =>
+    new Component(id,
+        annotation: annotation,
+        controller: controller,
+        classes: classes,
+        library: library,
+        template: template);
 
 // custom <library component>
 

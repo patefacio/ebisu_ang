@@ -5,16 +5,21 @@ import 'package:id/id.dart';
 // custom <additional imports>
 // end <additional imports>
 
-abstract class Identifiable {
+class Identifiable {
+  Identifiable(this._id);
+
   /// Id for the [Identifiable]
-  Id id;
+  Id get id => _id;
 
   // custom <class Identifiable>
   // end <class Identifiable>
 
+  Id _id;
 }
 
-abstract class Entity extends Object with Identifiable {
+class Entity extends Identifiable {
+  Entity(id) : super(id);
+
   // custom <class Entity>
 
   // end <class Entity>
