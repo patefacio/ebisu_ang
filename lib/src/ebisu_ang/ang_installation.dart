@@ -1,37 +1,64 @@
 part of ebisu_ang.ebisu_ang;
 
-class Installation extends AngEntity {
-  List<App> apps = [];
-  List<Package> packages = [];
+class Installation extends Entity {
+  Installation(id, {this.index, this.rootPath, this.appComponent, components})
+      : super(id),
+        components = components ?? [] {
+    // custom <Installation ctor>
+
+    rootPath ??= dirname(dirname(absolute(Platform.script.toFilePath())));
+
+    // end <Installation ctor>
+  }
+
+  Index index;
+  String rootPath;
+  Component appComponent;
+  List<Component> components = [];
 
   // custom <class Installation>
 
-  Installation(id) : super(id);
-
-  Iterable<Entity> get children => concat([apps, packages]);
-
-  set rootPath(String rootPath) => _rootPath = rootPath;
-
-  get rootPath {
-    if (_rootPath == null) {
-      _rootPath = join(dirname(Platform.script.path), id.snake);
-    }
-    return _rootPath;
-  }
-
-  toString() => brCompact([
+  toString() => ebisu.brCompact([
         'Installation(${this.id})',
-        indentBlock(brCompact([packages, apps]))
+        ebisu.indentBlock(ebisu.brCompact([components, appComponent]))
       ]);
 
   generate() {
-    setAsRoot();
-    packages.forEach((pkg) => pkg.generate());
+    System ngSystem = system(id);
+
+    final componentPath = join(rootPath, 'lib', 'components');
+
+    concat([
+      [appComponent],
+      components
+    ]).forEach((Component component) {
+      ngSystem.libraries.add(_makeLibrary(componentPath, component));
+    });
+
+    ngSystem
+      ..rootPath = rootPath
+      ..libraries.add(library('main')
+        ..path = join(rootPath, 'web')
+        ..mainCustomBlock.snippets.add('boo'))
+      ..pubSpec
+          .pubTransformers
+          .add(new AngTransformer(entryPoints: ['web/main.dart']))
+      ..pubSpec.dependencies.addAll([
+        new PubDependency('angular2')..version = '2.0.0-beta.17',
+        new PubDependency('browser')..version = '^0.10.0',
+      ])
+      ..generate();
   }
+
+  _makeLibrary(path, Component component) =>
+      library(component.id)
+      ..path = path
+      ..classes = [
+        class_(component.id)
+      ];
 
   // end <class Installation>
 
-  String _rootPath;
 }
 
 // custom <part ang_installation>

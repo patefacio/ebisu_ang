@@ -1,5 +1,6 @@
 library ebisu_ang.entity;
 
+import 'package:ebisu/ebisu.dart' as ebisu;
 import 'package:id/id.dart';
 
 // custom <additional imports>
@@ -18,7 +19,7 @@ class Identifiable {
 }
 
 class Entity extends Identifiable {
-  Entity(id) : super(id);
+  Entity(id) : super(ebisu.makeId(id));
 
   // custom <class Entity>
 

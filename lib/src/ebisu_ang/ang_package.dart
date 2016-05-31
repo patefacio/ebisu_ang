@@ -1,7 +1,7 @@
 part of ebisu_ang.ebisu_ang;
 
 /// Index html file for a package
-class Index extends AngEntity {
+class Index extends Entity {
   String content;
 
   // custom <class Index>
@@ -24,14 +24,14 @@ class AngTransformer extends PubTransformer {
   String get yamlEntry => '''
 - angular2:
     entry_points:
-${indentBlock(brCompact(entryPoints.map((ep) => "- $ep")), '      ')}
+${ebisu.indentBlock(ebisu.brCompact(entryPoints.map((ep) => "- $ep")), '      ')}
 ''';
 
   // end <class AngTransformer>
 
 }
 
-class Package extends AngEntity {
+class Package extends Entity {
   List<Component> components = [];
   set appComponent(Component appComponent) => _appComponent = appComponent;
   Index get index => _index;
@@ -42,8 +42,8 @@ class Package extends AngEntity {
 
   Iterable<Entity> get children => components;
 
-  toString() =>
-      brCompact(['Package(${id.snake})', indentBlock(brCompact(components))]);
+  toString() => ebisu.brCompact(
+      ['Package(${id.snake})', ebisu.indentBlock(ebisu.brCompact(components))]);
 
   get path =>
       _path == null ? (_path = join(owner.rootPath, 'pkg', id.snake)) : _path;
@@ -53,19 +53,19 @@ class Package extends AngEntity {
 
     final pkg = new System(id)
       ..rootPath = path
-      ..pubSpec.dependencies.addAll([
-        new PubDependency('angular2')..version = '2.0.0-beta.17',
-        new PubDependency('browser')..version = '^0.10.0',
-      ])
+        ..pubSpec.dependencies.addAll([
+          new PubDependency('angular2')..version = '2.0.0-beta.17',
+          new PubDependency('browser')..version = '^0.10.0',
+        ])
       ..libraries.addAll(components.map((cmp) => cmp.library));
 
     if (appComponent != null) {
       pkg.libraries.add(appComponent.library);
     }
 
-    _logger.info(brCompact([
+    _logger.info(ebisu.brCompact([
       'Generating package $id -> ${owner.id} with libs(${pkg.libraries.length}):',
-      indentBlock(brCompact(pkg.libraries.map((l) => l.id.snake))),
+      ebisu.indentBlock(ebisu.brCompact(pkg.libraries.map((l) => l.id.snake))),
     ]));
 
     components.forEach(_makeComponent);
@@ -90,7 +90,7 @@ class Package extends AngEntity {
         ..libMain =
             'main([List<String> args]) => bootstrap(${appComponent.controller.name});';
 
-      htmlMergeWithFile(
+      ebisu.htmlMergeWithFile(
           '''
 <!DOCTYPE html>
 <html lang="en">
@@ -117,7 +117,7 @@ class Package extends AngEntity {
       ? (_appComponent = component(id.snake + '_app'))
       : _appComponent;
 
-  _makeComponent(Component component) => htmlMergeWithFile(
+  _makeComponent(Component component) => ebisu.htmlMergeWithFile(
       component.template.toString(),
       join(path, 'lib', '${component.id.snake}.html'));
 

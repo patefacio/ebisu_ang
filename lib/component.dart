@@ -1,11 +1,16 @@
 library ebisu_ang.component;
 
+import 'directive.dart';
 import 'entity.dart';
 import 'package:ebisu/ebisu.dart' as ebisu;
 import 'package:ebisu/ebisu_dart_meta.dart';
 import 'package:ebisu_ang/directive.dart';
+import 'package:id/id.dart';
+import 'view.dart';
 
 export 'entity.dart';
+export 'view.dart';
+export 'directive.dart';
 
 // custom <additional imports>
 // end <additional imports>
@@ -116,7 +121,7 @@ class ComponentAnnotation {
         _inputs = inputs ?? [],
         _outputs = outputs ?? [],
         _host = host ?? {},
-        _styles = styles ?? [],
+        styles = styles ?? [],
         _styleUrls = styleUrls ?? [],
         _pipes = pipes ?? [],
         _viewProviders = viewProviders ?? [];
@@ -132,7 +137,7 @@ class ComponentAnnotation {
   /// Enables setting attributes on the *host* element. (See *ng-book2* - *How Angular
   /// Works* - *search* "host option lets us set")
   Map get host => _host;
-  List<String> get styles => _styles;
+  List<String> styles = [];
   List<String> get styleUrls => _styleUrls;
   List<String> get pipes => _pipes;
   List<String> get viewProviders => _viewProviders;
@@ -146,7 +151,6 @@ class ComponentAnnotation {
   List<String> _inputs = [];
   List<String> _outputs = [];
   Map _host = {};
-  List<String> _styles = [];
   List<String> _styleUrls = [];
   List<String> _pipes = [];
   List<String> _viewProviders = [];
@@ -176,20 +180,9 @@ ComponentAnnotation componentAnnotation(
         pipes: pipes,
         viewProviders: viewProviders);
 
-class Template {
-  Template({content}) : _content = content;
-
-  String get content => _content;
-
-  // custom <class Template>
-  // end <class Template>
-
-  String _content;
-}
-
 class Component extends Entity {
   Component(id, {annotation, controller, classes, library, template})
-      : super(id),
+      : super(ebisu.makeId(id)),
         _annotation = annotation,
         _controller = controller,
         _classes = classes ?? [],
@@ -202,6 +195,10 @@ class Component extends Entity {
   Template get template => _template;
 
   // custom <class Component>
+
+  get tag => this.id.emacs;
+
+  get library => library(this.id.snake);
 
   // end <class Component>
 

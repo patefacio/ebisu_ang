@@ -35,7 +35,10 @@ A library that supports code generation of Angular2 code
     ..testLibraries = [library('test_component'), library('test_entity'),]
     ..libraries = [
       library('entity')
-        ..imports = ['package:id/id.dart']
+        ..imports = [
+          'package:id/id.dart',
+          "'package:ebisu/ebisu.dart' as ebisu"
+        ]
         ..classes = [
           class_('identifiable')
             ..isAbstract = false
@@ -48,17 +51,27 @@ A library that supports code generation of Angular2 code
             ],
           class_('entity')
             ..hasJsonToString = false
-            ..withDefaultCtor((ctor) => ctor..frontParms = ['id']..superArgs = ['id'])
+            ..withDefaultCtor((ctor) => ctor
+              ..frontParms = ['id']
+              ..superArgs = ['ebisu.makeId(id)'])
             ..extend = 'Identifiable',
-          class_('htmlable')
-            ..isAbstract = true,
+          class_('htmlable')..isAbstract = true,
+        ],
+      library('view')
+        ..imports = ['package:ebisu_ang/entity.dart']
+        ..defaultMemberAccess = RO
+        ..classes = [
+          class_('template')..members = [member('content'),],
+          class_('view')..members = [member('template')..type = 'Template',]
         ],
       library('directive')
-      ..imports = [ 'package:ebisu_ang/entity.dart']
+        ..imports = ['package:ebisu_ang/entity.dart']
         ..defaultMemberAccess = RO
         ..classes = [
           class_('directive')
-          ..withDefaultCtor((ctor) => ctor..frontParms = ['id']..superArgs = ['id'])
+            ..withDefaultCtor((ctor) => ctor
+              ..frontParms = ['id']
+              ..superArgs = ['id'])
             ..extend = 'Entity'
             ..hasJsonToString = false
             ..members = [
@@ -72,10 +85,11 @@ A library that supports code generation of Angular2 code
         ..defaultMemberAccess = RO
         ..imports.addAll([
           "'package:ebisu/ebisu.dart' as ebisu",
-        'package:ebisu/ebisu_dart_meta.dart',
-        'package:ebisu_ang/directive.dart'
+          'package:ebisu/ebisu_dart_meta.dart',
+          'package:ebisu_ang/directive.dart',
+          'package:id/id.dart',
         ])
-        ..importAndExport('entity.dart')
+        ..importAndExportAll(['entity.dart', 'view.dart', 'directive.dart'])
         ..classes = [
           class_('io_expr')
             ..defaultCtorStyle = requiredParms
@@ -84,8 +98,10 @@ A library that supports code generation of Angular2 code
           class_('o_expr')..extend = 'IoExpr',
           class_('input')
             ..extend = 'Identifiable'
-            ..implement = ['Htmlable', ]
-            ..withDefaultCtor((ctor) => ctor..superArgs = ['id']..frontParms = ['id'])
+            ..implement = ['Htmlable',]
+            ..withDefaultCtor((ctor) => ctor
+              ..superArgs = ['id']
+              ..frontParms = ['id'])
             ..hasCtorSansNew = true
             ..members = [
               member('target')
@@ -107,8 +123,10 @@ Works* - *search* "is a fun one")
             ],
           class_('output')
             ..extend = 'Identifiable'
-            ..implement = ['Htmlable', ]
-            ..withDefaultCtor((ctor) => ctor..superArgs = ['id']..frontParms = ['id'])
+            ..implement = ['Htmlable',]
+            ..withDefaultCtor((ctor) => ctor
+              ..superArgs = ['id']
+              ..frontParms = ['id'])
             ..hasCtorSansNew = true
             ..members = [
               member('event')..ctorsOpt = [''],
@@ -144,7 +162,7 @@ Works* - *search* "host option lets us set")'''
                 ..init = {},
               member('styles')
                 ..type = 'List<String>'
-                ..init = [],
+                ..init = []..access = RW,
               member('style_urls')
                 ..type = 'List<String>'
                 ..init = [],
@@ -155,12 +173,11 @@ Works* - *search* "host option lets us set")'''
                 ..type = 'List<String>'
                 ..init = [],
             ],
-          class_('template')
-            ..defaultCtorStyle = namedParms
-            ..members = [member('content'),],
           class_('component')
-          ..withDefaultCtor((Ctor ctor) => ctor..frontParms = ['id']..superArgs = ['id'])
             ..defaultCtorStyle = namedParms
+            ..withDefaultCtor((Ctor ctor) => ctor
+              ..frontParms = ['id']
+              ..superArgs = ['ebisu.makeId(id)'])
             ..extend = 'Entity'
             ..hasCtorSansNew = true
             ..members = [
@@ -178,69 +195,42 @@ Works* - *search* "host option lets us set")'''
       library('ebisu_ang')
         ..includesLogger = true
         ..imports = [
+          'package:ebisu_ang/entity.dart',
           'package:id/id.dart',
-          'package:ebisu/ebisu.dart',
+          "'package:ebisu/ebisu.dart' as ebisu",
           "'package:ebisu/ebisu_dart_meta.dart' hide id",
           'package:quiver/iterables.dart',
           'package:path/path.dart',
           'io',
         ]
+        ..importAndExport('package:ebisu_ang/component.dart')
         ..parts = [
           part('ang_installation')
             ..classes = [
               class_('installation')
-                ..extend = 'AngEntity'
+                ..extend = 'Entity'
+                ..defaultCtorStyle = namedParms
+                ..withDefaultCtor((ctor) => ctor..frontParms = [ 'id']..superArgs = ['id']..tag = 'Installation ctor')
                 ..members = [
-                  member('root_path')..access = IA,
-                  member('apps')
-                    ..type = 'List<App>'
-                    ..init = [],
-                  member('packages')
-                    ..type = 'List<Package>'
+                  member('index')..type = 'Index',
+                  member('root_path')..access = RW,
+                  member('app_component')..type = 'Component',
+                  member('components')
+                    ..type = 'List<Component>'
                     ..init = [],
                 ]
             ],
-          part('ang_app')
-            ..classes = [
-              class_('app')
-                ..extend = 'AngEntity'
-                ..members = [
-                  member('entry_points')
-                    ..type = 'List<String>'
-                    ..init = [],
-                ],
-            ],
-          part('ang_entity')
-            ..classes = [
-              class_('ang_entity')
-                ..mixins = ['Entity']
-                ..isAbstract = true
-                ..members = [member('id')..type = 'Id']
-            ],
-          part('ang_template')
-            ..classes = [
-              class_('template')
-                ..extend = 'AngEntity'
-                ..members = [member('content'),],
-            ],
-          part('ang_directive')
-            ..classes = [
-              class_('directive')
-                ..extend = 'AngEntity'
-                ..members = [
-                  member('selector'),
-                  member('providers')
-                    ..type = 'List<String>'
-                    ..init = [],
-                ]
-            ],
-          part('ang_model')..classes = [class_('model')],
-          part('ang_package')
+          part('ang_index')
             ..classes = [
               class_('index')
-                ..extend = 'AngEntity'
                 ..doc = 'Index html file for a package'
-                ..members = [member('content'),],
+                ..defaultCtorStyle = requiredParms
+                ..members = [
+                  member('id')..type = 'Id',
+                  member('content'),],
+            ],
+          part('ang_transformer')
+            ..classes = [
               class_('ang_transformer')
                 ..extend = 'PubTransformer'
                 ..members = [
@@ -248,23 +238,6 @@ Works* - *search* "host option lets us set")'''
                     ..type = 'List<String>'
                     ..init = [],
                 ],
-              class_('package')
-                ..extend = 'AngEntity'
-                ..members = [
-                  member('path')..access = IA,
-                  member('components')
-                    ..type = 'List<Component>'
-                    ..init = [],
-                  member('app_component')
-                    ..type = 'Component'
-                    ..access = WO,
-                  member('main')
-                    ..type = 'Library'
-                    ..access = IA,
-                  member('index')
-                    ..type = 'Index'
-                    ..access = RO,
-                ]
             ],
         ]
     ];

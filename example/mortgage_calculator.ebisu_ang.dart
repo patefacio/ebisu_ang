@@ -9,16 +9,16 @@ main() {
       print("${r.loggerName} [${r.level}]:\t${r.message}"));
   Logger.root.level = Level.OFF;
 
-  final mortgageCalculator =
+  Installation mortgageCalculator =
     installation('mortgage_calculator')
-    ..packages = [
-      package('mortgage_calculator')
-      ..appComponent = component('mortgage_calculator')
+    ..rootPath = '/tmp/mortgage_calculator'
+    ..appComponent = component('mortgage_calculator')
       ..components = [
         component('mortgage_details'),
         component('mortgage_schedule'),
-      ]
-    ];
+      ];
 
   mortgageCalculator.generate();
+
+  //mortgageCalculator.generate();
 }
