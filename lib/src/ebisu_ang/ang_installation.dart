@@ -50,12 +50,9 @@ class Installation extends Entity {
       ..generate();
   }
 
-  _makeLibrary(path, Component component) =>
-      library(component.id)
-      ..path = path
-      ..classes = [
-        class_(component.id)
-      ];
+  _makeLibrary(path, Component component) => library(component.id)
+    ..path = path
+    ..classes = [class_(component.id)];
 
   // end <class Installation>
 

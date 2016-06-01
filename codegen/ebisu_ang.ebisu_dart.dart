@@ -136,12 +136,19 @@ Works* - *search* "is a fun one")
                 ..doc =
                     'The right-hand side expression - which is the action performed *on the client*',
             ],
-          class_('component_annotation')
+          class_('component')
             ..defaultCtorStyle = namedParms
+            ..defaultMemberAccess = RW
+            ..withDefaultCtor((Ctor ctor) => ctor
+              ..frontParms = ['id']
+              ..superArgs = ['ebisu.makeId(id)']
+              ..tag = 'Component Ctor'
+            )
+            ..extend = 'Entity'
             ..hasCtorSansNew = true
-            ..hasJsonToString = false
             ..members = [
               member('selector'),
+              member('template')..type = 'Template',
               member('template_url')
                 ..doc =
                     'For use when referring to separate file containing template',
@@ -172,24 +179,11 @@ Works* - *search* "host option lets us set")'''
               member('view_providers')
                 ..type = 'List<String>'
                 ..init = [],
-            ],
-          class_('component')
-            ..defaultCtorStyle = namedParms
-            ..withDefaultCtor((Ctor ctor) => ctor
-              ..frontParms = ['id']
-              ..superArgs = ['ebisu.makeId(id)'])
-            ..extend = 'Entity'
-            ..hasCtorSansNew = true
-            ..members = [
-              member('annotation')..type = 'ComponentAnnotation',
               member('controller')..type = 'Class',
-              member('classes')
-                ..type = 'List<Class>'
-                ..init = [],
               member('library')
                 ..type = 'Library'
-                ..access = IA,
-              member('template')..type = 'Template',
+                ..access = IA
+                ..isInDefaultCtor = false,
             ],
         ],
       library('ebisu_ang')

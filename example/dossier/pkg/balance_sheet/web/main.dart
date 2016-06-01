@@ -1,6 +1,6 @@
-library ignored....home.dbdavidson.dev.open_source.ebisu_ang.example.dossier.pkg.balance_sheet.web.main;
+library balance_sheet.web.main;
 
-import 'package:angular2/bootstrap.dart';
+import 'package:angular2/platform/browser.dart';
 import 'package:balance_sheet/account.dart';
 
 // custom <additional imports>

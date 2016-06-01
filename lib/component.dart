@@ -103,10 +103,11 @@ class Output extends Identifiable implements Htmlable {
 Output output(id, [String event, OExpr action]) =>
     new Output(id, event, action);
 
-class ComponentAnnotation {
-  ComponentAnnotation(
-      {selector,
-      templateUrl,
+class Component extends Entity {
+  Component(id,
+      {this.selector,
+      this.template,
+      this.templateUrl,
       directives,
       inputs,
       outputs,
@@ -114,85 +115,41 @@ class ComponentAnnotation {
       styles,
       styleUrls,
       pipes,
-      viewProviders})
-      : _selector = selector,
-        _templateUrl = templateUrl,
-        _directives = directives ?? [],
-        _inputs = inputs ?? [],
-        _outputs = outputs ?? [],
-        _host = host ?? {},
+      viewProviders,
+      this.controller})
+      : super(ebisu.makeId(id)),
+        directives = directives ?? [],
+        inputs = inputs ?? [],
+        outputs = outputs ?? [],
+        host = host ?? {},
         styles = styles ?? [],
-        _styleUrls = styleUrls ?? [],
-        _pipes = pipes ?? [],
-        _viewProviders = viewProviders ?? [];
+        styleUrls = styleUrls ?? [],
+        pipes = pipes ?? [],
+        viewProviders = viewProviders ?? [] {
+    // custom <Component Ctor>
 
-  String get selector => _selector;
+    selector ??= this.id.emacs;
+
+    // end <Component Ctor>
+  }
+
+  String selector;
+  Template template;
 
   /// For use when referring to separate file containing template
-  String get templateUrl => _templateUrl;
-  List<Directive> get directives => _directives;
-  List<String> get inputs => _inputs;
-  List<String> get outputs => _outputs;
+  String templateUrl;
+  List<Directive> directives = [];
+  List<String> inputs = [];
+  List<String> outputs = [];
 
   /// Enables setting attributes on the *host* element. (See *ng-book2* - *How Angular
   /// Works* - *search* "host option lets us set")
-  Map get host => _host;
+  Map host = {};
   List<String> styles = [];
-  List<String> get styleUrls => _styleUrls;
-  List<String> get pipes => _pipes;
-  List<String> get viewProviders => _viewProviders;
-
-  // custom <class ComponentAnnotation>
-  // end <class ComponentAnnotation>
-
-  String _selector;
-  String _templateUrl;
-  List<Directive> _directives = [];
-  List<String> _inputs = [];
-  List<String> _outputs = [];
-  Map _host = {};
-  List<String> _styleUrls = [];
-  List<String> _pipes = [];
-  List<String> _viewProviders = [];
-}
-
-/// Create ComponentAnnotation without new, for more declarative construction
-ComponentAnnotation componentAnnotation(
-        {String selector,
-        String templateUrl,
-        List<Directive> directives,
-        List<String> inputs,
-        List<String> outputs,
-        Map host,
-        List<String> styles,
-        List<String> styleUrls,
-        List<String> pipes,
-        List<String> viewProviders}) =>
-    new ComponentAnnotation(
-        selector: selector,
-        templateUrl: templateUrl,
-        directives: directives,
-        inputs: inputs,
-        outputs: outputs,
-        host: host,
-        styles: styles,
-        styleUrls: styleUrls,
-        pipes: pipes,
-        viewProviders: viewProviders);
-
-class Component extends Entity {
-  Component(id, {annotation, controller, classes, library, template})
-      : super(ebisu.makeId(id)),
-        _annotation = annotation,
-        _controller = controller,
-        _classes = classes ?? [],
-        _library = library,
-        _template = template;
-
-  ComponentAnnotation get annotation => _annotation;
-  Class get controller => _controller;
-  List<Class> get classes => _classes;
-  Template get template => _template;
+  List<String> styleUrls = [];
+  List<String> pipes = [];
+  List<String> viewProviders = [];
+  Class controller;
 
   // custom <class Component>
 
@@ -202,26 +159,36 @@ class Component extends Entity {
 
   // end <class Component>
 
-  ComponentAnnotation _annotation;
-  Class _controller;
-  List<Class> _classes = [];
   Library _library;
-  Template _template;
 }
 
 /// Create Component without new, for more declarative construction
 Component component(id,
-        {ComponentAnnotation annotation,
-        Class controller,
-        List<Class> classes,
-        Library library,
-        Template template}) =>
+        {String selector,
+        Template template,
+        String templateUrl,
+        List<Directive> directives,
+        List<String> inputs,
+        List<String> outputs,
+        Map host,
+        List<String> styles,
+        List<String> styleUrls,
+        List<String> pipes,
+        List<String> viewProviders,
+        Class controller}) =>
     new Component(id,
-        annotation: annotation,
-        controller: controller,
-        classes: classes,
-        library: library,
-        template: template);
+        selector: selector,
+        template: template,
+        templateUrl: templateUrl,
+        directives: directives,
+        inputs: inputs,
+        outputs: outputs,
+        host: host,
+        styles: styles,
+        styleUrls: styleUrls,
+        pipes: pipes,
+        viewProviders: viewProviders,
+        controller: controller);
 
 // custom <library component>
 

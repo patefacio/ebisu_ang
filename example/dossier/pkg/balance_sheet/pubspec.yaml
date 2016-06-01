@@ -1,14 +1,18 @@
 name: balance_sheet
 version: 0.0.1
 author: Daniel Davidson <dbdavidson@yahoo.com>
+environment:
+  sdk: '>=1.8.2 <2.0.0'
+
 dependencies:
+  angular2: "2.0.0-beta.17"
+  browser: "^0.10.0"
 
 # custom <balance_sheet dependencies>
 # end <balance_sheet dependencies>
 
 dev_dependencies:
   yaml: "any"
-  browser: "any"
 
 # custom <balance_sheet dev dependencies>
 
@@ -22,6 +26,10 @@ dependency_overrides:
 # end <balance_sheet dependency overrides>
 
 transformers:
+- angular2:
+    entry_points:
+      - web/main.dart
+
 
 # custom <balance_sheet transformers>
 
