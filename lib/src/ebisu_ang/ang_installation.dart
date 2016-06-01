@@ -23,7 +23,11 @@ class Installation extends Entity {
         ebisu.indentBlock(ebisu.brCompact([components, appComponent]))
       ]);
 
+  Iterable get children => concat([[appComponent], components]);
+
   generate() {
+    setRootNode();
+
     System ngSystem = system(id);
 
     final componentPath = join(rootPath, 'lib', 'components');
@@ -32,7 +36,7 @@ class Installation extends Entity {
       [appComponent],
       components
     ]).forEach((Component component) {
-      ngSystem.libraries.add(_makeLibrary(componentPath, component));
+      ngSystem.libraries.add(component.library..path = componentPath);
     });
 
     ngSystem
@@ -49,10 +53,6 @@ class Installation extends Entity {
       ])
       ..generate();
   }
-
-  _makeLibrary(path, Component component) => library(component.id)
-    ..path = path
-    ..classes = [class_(component.id)];
 
   // end <class Installation>
 

@@ -35,6 +35,7 @@ A library that supports code generation of Angular2 code
     ..testLibraries = [library('test_component'), library('test_entity'),]
     ..libraries = [
       library('entity')
+      ..includesLogger = true
         ..imports = [
           'package:id/id.dart',
           "'package:ebisu/ebisu.dart' as ebisu"
@@ -50,11 +51,18 @@ A library that supports code generation of Angular2 code
                 ..type = 'Id',
             ],
           class_('entity')
+            ..isAbstract = true
             ..hasJsonToString = false
             ..withDefaultCtor((ctor) => ctor
               ..frontParms = ['id']
               ..superArgs = ['ebisu.makeId(id)'])
-            ..extend = 'Identifiable',
+            ..extend = 'Identifiable'
+            ..members = [
+              member('doc')..doc = 'Documentation for the angular entity',
+              member('owner')..type = 'Entity'..access = RO,
+              member('entity_path')..type = 'List<Entity>'
+                ..access = RO..init = [],
+            ],
           class_('htmlable')..isAbstract = true,
         ],
       library('view')
@@ -85,7 +93,7 @@ A library that supports code generation of Angular2 code
         ..defaultMemberAccess = RO
         ..imports.addAll([
           "'package:ebisu/ebisu.dart' as ebisu",
-          'package:ebisu/ebisu_dart_meta.dart',
+          "'package:ebisu/ebisu_dart_meta.dart' as ebisu_dart_meta",
           'package:ebisu_ang/directive.dart',
           'package:id/id.dart',
         ])
@@ -179,10 +187,13 @@ Works* - *search* "host option lets us set")'''
               member('view_providers')
                 ..type = 'List<String>'
                 ..init = [],
-              member('controller')..type = 'Class',
+              member('controller')
+                ..access = RO
+                ..type = 'ebisu_dart_meta.Class'
+                ..isInDefaultCtor = false,
               member('library')
-                ..type = 'Library'
-                ..access = IA
+                ..type = 'ebisu_dart_meta.Library'
+                ..access = RO
                 ..isInDefaultCtor = false,
             ],
         ],

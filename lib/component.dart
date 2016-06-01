@@ -3,7 +3,7 @@ library ebisu_ang.component;
 import 'directive.dart';
 import 'entity.dart';
 import 'package:ebisu/ebisu.dart' as ebisu;
-import 'package:ebisu/ebisu_dart_meta.dart';
+import 'package:ebisu/ebisu_dart_meta.dart' as ebisu_dart_meta;
 import 'package:ebisu_ang/directive.dart';
 import 'package:id/id.dart';
 import 'view.dart';
@@ -115,8 +115,7 @@ class Component extends Entity {
       styles,
       styleUrls,
       pipes,
-      viewProviders,
-      this.controller})
+      viewProviders})
       : super(ebisu.makeId(id)),
         directives = directives ?? [],
         inputs = inputs ?? [],
@@ -129,6 +128,8 @@ class Component extends Entity {
     // custom <Component Ctor>
 
     selector ??= this.id.emacs;
+    _controller = ebisu_dart_meta.class_(this.id);
+    _library = ebisu_dart_meta.library(this.id)..classes = [_controller];
 
     // end <Component Ctor>
   }
@@ -149,17 +150,33 @@ class Component extends Entity {
   List<String> styleUrls = [];
   List<String> pipes = [];
   List<String> viewProviders = [];
-  Class controller;
+  ebisu_dart_meta.Class get controller => _controller;
+  ebisu_dart_meta.Library get library => _library;
 
   // custom <class Component>
 
   get tag => this.id.emacs;
 
-  get library => library(this.id.snake);
+  Iterable<Entity> get children => new Iterable<Entity>.generate(0);
+
+  onOwnershipEstablished() {
+    _hardenAnnotations();
+  }
+
+  _hardenAnnotations() {
+    _controller.annotations.add(ebisu_dart_meta.annotation(
+        ebisu.brCompact([
+        '@Component {',
+        "selector: '$selector',",
+
+          '}'
+        ])));
+  }
 
   // end <class Component>
 
-  Library _library;
+  ebisu_dart_meta.Class _controller;
+  ebisu_dart_meta.Library _library;
 }
 
 /// Create Component without new, for more declarative construction
@@ -174,8 +191,7 @@ Component component(id,
         List<String> styles,
         List<String> styleUrls,
         List<String> pipes,
-        List<String> viewProviders,
-        Class controller}) =>
+        List<String> viewProviders}) =>
     new Component(id,
         selector: selector,
         template: template,
@@ -187,8 +203,7 @@ Component component(id,
         styles: styles,
         styleUrls: styleUrls,
         pipes: pipes,
-        viewProviders: viewProviders,
-        controller: controller);
+        viewProviders: viewProviders);
 
 // custom <library component>
 
