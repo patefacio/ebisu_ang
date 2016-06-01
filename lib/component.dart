@@ -129,7 +129,9 @@ class Component extends Entity {
 
     selector ??= this.id.emacs;
     _controller = ebisu_dart_meta.class_(this.id);
-    _library = ebisu_dart_meta.library(this.id)..classes = [_controller];
+    _library = ebisu_dart_meta.library(this.id)
+      ..classes = [_controller]
+      ..imports.add('package:angular2/angular2.dart');
 
     // end <Component Ctor>
   }
@@ -165,7 +167,11 @@ class Component extends Entity {
 
   _hardenAnnotations() {
     _controller.annotations.add(ebisu_dart_meta.annotation(
-        ebisu.brCompact(['@Component {', "selector: '$selector',", '}'])));
+        ebisu.brCompact(['@Component (',
+        /// selector for the component
+        "selector: '$selector'",
+        /// close out the component annotation
+            ')'])));
   }
 
   // end <class Component>
