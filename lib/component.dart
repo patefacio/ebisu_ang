@@ -6,6 +6,7 @@ import 'package:ebisu/ebisu.dart' as ebisu;
 import 'package:ebisu/ebisu_dart_meta.dart' as ebisu_dart_meta;
 import 'package:ebisu_ang/directive.dart';
 import 'package:id/id.dart';
+import 'package:path/path.dart';
 import 'view.dart';
 
 export 'entity.dart';
@@ -164,6 +165,10 @@ class Component extends Entity {
     _hardenAnnotations();
   }
 
+  get templateUrl => '${id.snake}.html';
+
+  get templateHtml => template.html;
+
   _hardenAnnotations() {
     _controller.annotations.add(ebisu_dart_meta.annotation(ebisu.brCompact([
       '@Component (',
@@ -172,12 +177,21 @@ class Component extends Entity {
         /// selector for the component
         "selector: '$selector'",
 
-        hasInlineTemplate ? "template: '''${template.html}'''" : 'templateUrl: "${id.snake}.html"',
+        hasInlineTemplate
+            ? "template: '''${templateHtml}'''"
+            : 'templateUrl: "$templateUrl"',
       ], ',\n', true),
 
       /// close out the component annotation
       ')'
     ])));
+  }
+
+  generateTemplate(String componentPath) {
+    if (!hasInlineTemplate) {
+      template ??= new Template();
+      ebisu.htmlMergeWithFile(template.html, join(componentPath, templateUrl));
+    }
   }
 
   // end <class Component>

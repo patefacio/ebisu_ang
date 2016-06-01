@@ -41,6 +41,7 @@ class Installation extends Entity {
       components
     ]).forEach((Component component) {
       ngSystem.libraries.add(component.library..path = componentPath);
+      component.generateTemplate(componentPath);
     });
 
     final webPath = join(rootPath, 'web');

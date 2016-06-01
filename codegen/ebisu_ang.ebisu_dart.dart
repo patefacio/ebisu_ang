@@ -96,6 +96,7 @@ A library that supports code generation of Angular2 code
           "'package:ebisu/ebisu_dart_meta.dart' as ebisu_dart_meta",
           'package:ebisu_ang/directive.dart',
           'package:id/id.dart',
+          'package:path/path.dart',
         ])
         ..importAndExportAll(['entity.dart', 'view.dart', 'directive.dart'])
         ..classes = [

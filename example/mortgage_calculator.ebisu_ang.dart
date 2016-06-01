@@ -20,7 +20,8 @@ main() {
         component('mortgage_details',
             hasInlineTemplate: true,
             template: new Template()),
-        component('mortgage_schedule'),
+        component('mortgage_schedule')
+        ..template = new Template(),
       ];
 
   mortgageCalculator.generate();
