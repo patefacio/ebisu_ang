@@ -157,9 +157,6 @@ Works* - *search* "is a fun one")
             ..members = [
               member('selector'),
               member('template')..type = 'Template',
-              member('template_url')
-                ..doc =
-                    'For use when referring to separate file containing template',
               member('directives')
                 ..type = 'List<Directive>'
                 ..init = [],
@@ -195,6 +192,8 @@ Works* - *search* "host option lets us set")'''
                 ..type = 'ebisu_dart_meta.Library'
                 ..access = RO
                 ..isInDefaultCtor = false,
+              member('has_inline_template')
+                ..init = false,
             ],
         ],
       library('ebisu_ang')

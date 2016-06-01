@@ -107,7 +107,6 @@ class Component extends Entity {
   Component(id,
       {this.selector,
       this.template,
-      this.templateUrl,
       directives,
       inputs,
       outputs,
@@ -115,7 +114,8 @@ class Component extends Entity {
       styles,
       styleUrls,
       pipes,
-      viewProviders})
+      viewProviders,
+      hasInlineTemplate})
       : super(ebisu.makeId(id)),
         directives = directives ?? [],
         inputs = inputs ?? [],
@@ -124,7 +124,8 @@ class Component extends Entity {
         styles = styles ?? [],
         styleUrls = styleUrls ?? [],
         pipes = pipes ?? [],
-        viewProviders = viewProviders ?? [] {
+        viewProviders = viewProviders ?? [],
+        hasInlineTemplate = hasInlineTemplate ?? false {
     // custom <Component Ctor>
 
     selector ??= this.id.emacs;
@@ -138,9 +139,6 @@ class Component extends Entity {
 
   String selector;
   Template template;
-
-  /// For use when referring to separate file containing template
-  String templateUrl;
   List<Directive> directives = [];
   List<String> inputs = [];
   List<String> outputs = [];
@@ -154,6 +152,7 @@ class Component extends Entity {
   List<String> viewProviders = [];
   ebisu_dart_meta.Class get controller => _controller;
   ebisu_dart_meta.Library get library => _library;
+  bool hasInlineTemplate = false;
 
   // custom <class Component>
 
@@ -166,12 +165,19 @@ class Component extends Entity {
   }
 
   _hardenAnnotations() {
-    _controller.annotations.add(ebisu_dart_meta.annotation(
-        ebisu.brCompact(['@Component (',
+    _controller.annotations.add(ebisu_dart_meta.annotation(ebisu.brCompact([
+      '@Component (',
+
+      ebisu.combine([
         /// selector for the component
         "selector: '$selector'",
-        /// close out the component annotation
-            ')'])));
+
+        hasInlineTemplate ? "template: '''${template.html}'''" : 'templateUrl: "${id.snake}.html"',
+      ], ',\n', true),
+
+      /// close out the component annotation
+      ')'
+    ])));
   }
 
   // end <class Component>
@@ -184,7 +190,6 @@ class Component extends Entity {
 Component component(id,
         {String selector,
         Template template,
-        String templateUrl,
         List<Directive> directives,
         List<String> inputs,
         List<String> outputs,
@@ -192,11 +197,11 @@ Component component(id,
         List<String> styles,
         List<String> styleUrls,
         List<String> pipes,
-        List<String> viewProviders}) =>
+        List<String> viewProviders,
+        bool hasInlineTemplate}) =>
     new Component(id,
         selector: selector,
         template: template,
-        templateUrl: templateUrl,
         directives: directives,
         inputs: inputs,
         outputs: outputs,
@@ -204,7 +209,8 @@ Component component(id,
         styles: styles,
         styleUrls: styleUrls,
         pipes: pipes,
-        viewProviders: viewProviders);
+        viewProviders: viewProviders,
+        hasInlineTemplate: hasInlineTemplate);
 
 // custom <library component>
 
