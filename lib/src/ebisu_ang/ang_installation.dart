@@ -49,7 +49,9 @@ class Installation extends Entity {
       ..rootPath = rootPath
       ..libraries.add(library('main')
         ..path = webPath
-        ..imports = ['package:${id.snake}/components/${appComponent.id.snake}.dart']
+        ..imports = [
+          'package:${id.snake}/components/${appComponent.id.snake}.dart'
+        ]
         ..mainCustomBlock.snippets.add('''
   bootstrap(${appComponent.controller.id.capCamel}, [
     // todo add providers
