@@ -7,7 +7,7 @@ main() {
 
   Logger.root.onRecord.listen((LogRecord r) =>
       print("${r.loggerName} [${r.level}]:\t${r.message}"));
-  Logger.root.level = Level.OFF;
+  Logger.root.level = Level.INFO;
 
   Installation mortgageCalculator =
     installation('mortgage_calculator')

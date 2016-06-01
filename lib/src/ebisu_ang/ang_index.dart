@@ -2,10 +2,9 @@ part of ebisu_ang.ebisu_ang;
 
 /// Index html file for a package
 class Index {
-  Index(this.id, this.content);
+  Index(this._id);
 
-  Id id;
-  String content;
+  Id get id => _id;
 
   // custom <class Index>
 
@@ -26,6 +25,7 @@ class Index {
 
   // end <class Index>
 
+  Id _id;
 }
 
 // custom <part ang_index>

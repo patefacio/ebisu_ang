@@ -217,7 +217,7 @@ Works* - *search* "host option lets us set")'''
                 ..defaultCtorStyle = namedParms
                 ..withDefaultCtor((ctor) => ctor..frontParms = [ 'id']..superArgs = ['id']..tag = 'Installation ctor')
                 ..members = [
-                  member('index')..type = 'Index',
+                  member('index')..type = 'Index'..access = RO..isInDefaultCtor = false,
                   member('root_path')..access = RW,
                   member('app_component')..type = 'Component',
                   member('components')
@@ -231,8 +231,8 @@ Works* - *search* "host option lets us set")'''
                 ..doc = 'Index html file for a package'
                 ..defaultCtorStyle = requiredParms
                 ..members = [
-                  member('id')..type = 'Id',
-                  member('content'),],
+                  member('id')..type = 'Id'..access = RO,
+                ],
             ],
           part('ang_transformer')
             ..classes = [

@@ -165,12 +165,7 @@ class Component extends Entity {
 
   _hardenAnnotations() {
     _controller.annotations.add(ebisu_dart_meta.annotation(
-        ebisu.brCompact([
-        '@Component {',
-        "selector: '$selector',",
-
-          '}'
-        ])));
+        ebisu.brCompact(['@Component {', "selector: '$selector',", '}'])));
   }
 
   // end <class Component>

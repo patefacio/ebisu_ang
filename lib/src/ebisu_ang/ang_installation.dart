@@ -1,17 +1,18 @@
 part of ebisu_ang.ebisu_ang;
 
 class Installation extends Entity {
-  Installation(id, {this.index, this.rootPath, this.appComponent, components})
+  Installation(id, {this.rootPath, this.appComponent, components})
       : super(id),
         components = components ?? [] {
     // custom <Installation ctor>
 
     rootPath ??= dirname(dirname(absolute(Platform.script.toFilePath())));
+    _index = new Index(this.id);
 
     // end <Installation ctor>
   }
 
-  Index index;
+  Index get index => _index;
   String rootPath;
   Component appComponent;
   List<Component> components = [];
@@ -23,7 +24,10 @@ class Installation extends Entity {
         ebisu.indentBlock(ebisu.brCompact([components, appComponent]))
       ]);
 
-  Iterable get children => concat([[appComponent], components]);
+  Iterable get children => concat([
+        [appComponent],
+        components
+      ]);
 
   generate() {
     setRootNode();
@@ -39,11 +43,18 @@ class Installation extends Entity {
       ngSystem.libraries.add(component.library..path = componentPath);
     });
 
+    final webPath = join(rootPath, 'web');
+
     ngSystem
       ..rootPath = rootPath
       ..libraries.add(library('main')
-        ..path = join(rootPath, 'web')
-        ..mainCustomBlock.snippets.add('boo'))
+        ..path = webPath
+        ..imports = ['package:${id.snake}/components/${appComponent.id.snake}.dart']
+        ..mainCustomBlock.snippets.add('''
+  bootstrap(${appComponent.controller.id.capCamel}, [
+    // todo add providers
+  ]);
+        '''))
       ..pubSpec
           .pubTransformers
           .add(new AngTransformer(entryPoints: ['web/main.dart']))
@@ -52,10 +63,13 @@ class Installation extends Entity {
         new PubDependency('browser')..version = '^0.10.0',
       ])
       ..generate();
+
+    ebisu.htmlMergeWithFile(index.html, join(webPath, 'index.html'));
   }
 
   // end <class Installation>
 
+  Index _index;
 }
 
 // custom <part ang_installation>
