@@ -8,7 +8,7 @@ main() {
 
   Logger.root.onRecord.listen((LogRecord r) =>
       print("${r.loggerName} [${r.level}]:\t${r.message}"));
-  Logger.root.level = Level.INFO;
+  Logger.root.level = Level.OFF;
 
   useDartFormatter = true;
 
@@ -20,8 +20,7 @@ main() {
         component('mortgage_details',
             hasInlineTemplate: true,
             template: new Template()),
-        component('mortgage_schedule')
-        ..template = new Template(),
+        component('mortgage_schedule'),
       ];
 
   mortgageCalculator.generate();

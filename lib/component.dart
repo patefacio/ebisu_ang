@@ -190,7 +190,7 @@ class Component extends Entity {
   generateTemplate(String componentPath) {
     if (!hasInlineTemplate) {
       template ??= new Template();
-      ebisu.htmlMergeWithFile(template.html, join(componentPath, templateUrl));
+      ebisu.htmlMergeWithFile(template.taggedHtml(id), join(componentPath, templateUrl));
     }
   }
 

@@ -1,5 +1,6 @@
 library ebisu_ang.view;
 
+import 'package:ebisu/ebisu.dart' as ebisu;
 import 'package:ebisu_ang/entity.dart';
 
 // custom <additional imports>
@@ -10,11 +11,14 @@ class Template {
 
   // custom <class Template>
 
-  get html => '''
-<div>
-  <em>generated component</em>
-$content
-</div>''';
+  get html => taggedHtml(null);
+
+  taggedHtml(tag) => ebisu.brCompact([
+        '<div>',
+        tag != null ? '<em>generated component $tag</em>' : '',
+        content,
+        '</div>'
+      ]);
 
   // end <class Template>
 

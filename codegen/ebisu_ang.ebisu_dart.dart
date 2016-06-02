@@ -35,7 +35,7 @@ A library that supports code generation of Angular2 code
     ..testLibraries = [library('test_component'), library('test_entity'),]
     ..libraries = [
       library('entity')
-      ..includesLogger = true
+        ..includesLogger = true
         ..imports = [
           'package:id/id.dart',
           "'package:ebisu/ebisu.dart' as ebisu"
@@ -59,14 +59,21 @@ A library that supports code generation of Angular2 code
             ..extend = 'Identifiable'
             ..members = [
               member('doc')..doc = 'Documentation for the angular entity',
-              member('owner')..type = 'Entity'..access = RO,
-              member('entity_path')..type = 'List<Entity>'
-                ..access = RO..init = [],
+              member('owner')
+                ..type = 'Entity'
+                ..access = RO,
+              member('entity_path')
+                ..type = 'List<Entity>'
+                ..access = RO
+                ..init = [],
             ],
           class_('htmlable')..isAbstract = true,
         ],
       library('view')
-        ..imports = ['package:ebisu_ang/entity.dart']
+        ..imports = [
+          'package:ebisu_ang/entity.dart',
+          "'package:ebisu/ebisu.dart' as ebisu",
+        ]
         ..defaultMemberAccess = RO
         ..classes = [
           class_('template')..members = [member('content'),],
@@ -151,8 +158,7 @@ Works* - *search* "is a fun one")
             ..withDefaultCtor((Ctor ctor) => ctor
               ..frontParms = ['id']
               ..superArgs = ['ebisu.makeId(id)']
-              ..tag = 'Component Ctor'
-            )
+              ..tag = 'Component Ctor')
             ..extend = 'Entity'
             ..hasCtorSansNew = true
             ..members = [
@@ -175,7 +181,8 @@ Works* - *search* "host option lets us set")'''
                 ..init = {},
               member('styles')
                 ..type = 'List<String>'
-                ..init = []..access = RW,
+                ..init = []
+                ..access = RW,
               member('style_urls')
                 ..type = 'List<String>'
                 ..init = [],
@@ -193,8 +200,7 @@ Works* - *search* "host option lets us set")'''
                 ..type = 'ebisu_dart_meta.Library'
                 ..access = RO
                 ..isInDefaultCtor = false,
-              member('has_inline_template')
-                ..init = false,
+              member('has_inline_template')..init = false,
             ],
         ],
       library('ebisu_ang')
@@ -215,9 +221,15 @@ Works* - *search* "host option lets us set")'''
               class_('installation')
                 ..extend = 'Entity'
                 ..defaultCtorStyle = namedParms
-                ..withDefaultCtor((ctor) => ctor..frontParms = [ 'id']..superArgs = ['id']..tag = 'Installation ctor')
+                ..withDefaultCtor((ctor) => ctor
+                  ..frontParms = ['id']
+                  ..superArgs = ['id']
+                  ..tag = 'Installation ctor')
                 ..members = [
-                  member('index')..type = 'Index'..access = RO..isInDefaultCtor = false,
+                  member('index')
+                    ..type = 'Index'
+                    ..access = RO
+                    ..isInDefaultCtor = false,
                   member('root_path')..access = RW,
                   member('app_component')..type = 'Component',
                   member('components')
@@ -231,7 +243,9 @@ Works* - *search* "host option lets us set")'''
                 ..doc = 'Index html file for a package'
                 ..defaultCtorStyle = requiredParms
                 ..members = [
-                  member('id')..type = 'Id'..access = RO,
+                  member('id')
+                    ..type = 'Id'
+                    ..access = RO,
                 ],
             ],
           part('ang_transformer')
