@@ -10,6 +10,7 @@ main() {
       ..components = [
         component('main_div'),
       ]
+      package('goo').
     ];
 
   for(var x in helloWorld.progeny) {

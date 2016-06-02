@@ -9,9 +9,9 @@ import 'package:id/id.dart';
 import 'package:path/path.dart';
 import 'view.dart';
 
+export 'directive.dart';
 export 'entity.dart';
 export 'view.dart';
-export 'directive.dart';
 
 // custom <additional imports>
 // end <additional imports>
@@ -190,7 +190,8 @@ class Component extends Entity {
   generateTemplate(String componentPath) {
     if (!hasInlineTemplate) {
       template ??= new Template();
-      ebisu.htmlMergeWithFile(template.html, join(componentPath, templateUrl));
+      ebisu.htmlMergeWithFile(
+          template.taggedHtml(id), join(componentPath, templateUrl));
     }
   }
 
